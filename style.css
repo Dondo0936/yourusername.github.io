@@ -1,0 +1,289 @@
+:root {
+    --primary-bg-color: #1a1a1a; /* Dark gray, almost black */
+    --secondary-bg-color: #2a2a2a; /* Slightly lighter dark gray */
+    --text-color: #e0e0e0; /* Light gray for text */
+    --accent-color: #00c6ff; /* A vibrant blue, can be changed */
+    --border-color: #333;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 85%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Hero Section */
+.hero {
+    background-color: var(--primary-bg-color); /* Or a very subtle gradient/texture */
+    padding: 80px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 0.2em;
+    color: #fff;
+    font-weight: 700;
+}
+
+.hero .subtitle {
+    font-size: 1.5em;
+    color: var(--accent-color);
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+
+.hero .intro {
+    font-size: 1.1em;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    color: var(--text-color);
+    font-weight: 300;
+}
+
+.cta-buttons .btn {
+    text-decoration: none;
+    padding: 12px 25px;
+    margin: 0 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--primary-bg-color);
+    border: 1px solid var(--accent-color);
+}
+
+.btn-primary:hover {
+    background-color: #00a5d9; /* Darker accent */
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-bg-color);
+    transform: translateY(-2px);
+}
+
+/* General Section Styling */
+main section {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+main section:last-child {
+    border-bottom: none;
+}
+
+main section h2 {
+    text-align: center;
+    font-size: 2.2em;
+    color: #fff;
+    margin-bottom: 40px;
+    font-weight: 600;
+    position: relative;
+}
+
+main section h2::after { /* Subtle underline effect */
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 10px auto 0;
+}
+
+/* Skills Section */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.skill-category {
+    background-color: var(--secondary-bg-color);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.skill-category h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.skill-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.skill-category ul li {
+    margin-bottom: 8px;
+    font-weight: 300;
+}
+
+/* Projects Section */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background-color: var(--secondary-bg-color);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.project-card p {
+    margin-bottom: 10px;
+    font-size: 0.95em;
+    flex-grow: 1; /* Makes description fill space */
+}
+.project-card p strong {
+    color: #ccc; /* Lighter gray for strong tags */
+}
+
+.project-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: auto; /* Pushes link to the bottom */
+    align-self: flex-start;
+}
+
+.project-link:hover {
+    text-decoration: underline;
+}
+
+/* Experience Section */
+.experience-item {
+    background-color: var(--secondary-bg-color);
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.experience-item h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.experience-item .company-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.experience-item .dates {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+.experience-item ul {
+    padding-left: 20px;
+}
+
+.experience-item ul li {
+    margin-bottom: 10px;
+}
+
+.experience-item ul li strong {
+    color: #ccc;
+}
+
+/* Education Section */
+.education-item {
+    background-color: var(--secondary-bg-color);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center; /* Center education details */
+}
+
+.education-item h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.education-item p {
+    margin-bottom: 5px;
+}
+
+/* Contact Section */
+.contact-section {
+    text-align: center;
+}
+
+.contact-section p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.contact-section a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.contact-section a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    background-color: var(--secondary-bg-color);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5em;
+    }
+    .hero .subtitle {
+        font-size: 1.2em;
+    }
+    .skills-grid, .projects-grid {
+        grid-template-columns: 1fr; /* Stack on smaller screens */
+    }
+    main section h2 {
+        font-size: 1.8em;
+    }
+}
