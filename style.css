@@ -1,13 +1,12 @@
 :root {
-    --bg-color: #0A0A0A; /* Very dark, near black */
-    --text-color: #E0E0E0; /* Light gray */
-    --primary-accent: #00A9FF; /* A bright, clean blue - can be adjusted */
-    --secondary-accent: #8A2BE2; /* A secondary color for gradients if needed */
-    --glow-start-color: rgba(0, 169, 255, 0.15); /* Glow for the blue accent */
-    --glow-end-color: rgba(138, 43, 226, 0.1); /* Glow for a secondary accent */
-    --font-primary: 'Space Grotesk', sans-serif;
-    --font-secondary: 'Inter', sans-serif;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --bg-color: #000000; /* Pure black */
+    --text-color-primary: #FFFFFF; /* Pure white for primary text/headings */
+    --text-color-secondary: rgba(255, 255, 255, 0.75); /* White with opacity for secondary text */
+    --border-color: rgba(255, 255, 255, 0.2); /* Subtle white border */
+    --font-main: 'Inter', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+
+    /* Removed unused color variables from the previous theme */
 }
 
 * {
@@ -18,25 +17,16 @@
 
 body {
     background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-secondary);
+    color: var(--text-color-primary);
+    font-family: var(--font-main);
+    font-weight: 400; /* Default to Inter Regular */
     line-height: 1.7;
     overflow-x: hidden;
-    position: relative;
+    position: relative; /* Retained for structural reasons, glow is removed */
 }
 
 .background-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background:
-        radial-gradient(ellipse at top right, var(--glow-start-color) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom left, var(--glow-end-color) 0%, transparent 50%);
-    z-index: -1;
-    opacity: 0.7;
+    display: none; /* Remove glow */
 }
 
 .container {
@@ -52,8 +42,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(10, 10, 10, 0.8); /* Semi-transparent background */
-    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    backdrop-filter: blur(10px); /* Keep modern blur */
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
 }
@@ -65,45 +55,51 @@ body {
 }
 
 .nav-logo {
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: 1.8em;
-    font-weight: 700;
-    color: #fff;
+    font-weight: 700; /* Bold */
+    color: var(--text-color-primary);
     text-decoration: none;
 }
 
 .nav-links a {
-    color: var(--text-color);
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
+    color: var(--text-color-secondary);
     text-decoration: none;
     margin-left: 25px;
-    font-family: var(--font-primary);
-    font-weight: 500;
     font-size: 0.95em;
     transition: color 0.3s ease;
 }
 
-.nav-links a:hover, .nav-links a.nav-cta:hover {
-    color: var(--primary-accent);
+.nav-links a:hover {
+    color: var(--text-color-primary);
 }
 
 .nav-links a.nav-cta {
     padding: 8px 15px;
-    border: 1px solid var(--primary-accent);
+    border: 1px solid var(--text-color-primary); /* White border */
     border-radius: 5px;
-    color: var(--primary-accent);
+    color: var(--text-color-primary); /* White text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a.nav-cta:hover {
+    background-color: var(--text-color-primary); /* White background */
+    color: var(--bg-color); /* Black text */
 }
 
 
 /* Hero Section */
 .hero {
-    min-height: 80vh; /* Adjust as needed */
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 160px 20px 80px; /* Added top padding for fixed nav */
+    padding: 160px 20px 80px;
     position: relative;
-    overflow: hidden; /* For any pseudo-element effects */
+    overflow: hidden;
 }
 
 .hero-content {
@@ -111,49 +107,51 @@ body {
 }
 
 .hero-title {
-    font-family: var(--font-primary);
-    font-size: clamp(3em, 7vw, 5.5em); /* Responsive font size */
-    font-weight: 700;
-    color: #fff;
+    font-family: var(--font-display); /* Space Grotesk */
+    font-size: clamp(3em, 7vw, 5.5em);
+    font-weight: 700; /* Bold */
+    color: var(--text-color-primary);
     line-height: 1.1;
     margin-bottom: 0.2em;
     letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: clamp(1.2em, 3vw, 1.8em);
-    color: var(--primary-accent);
+    color: var(--text-color-secondary); /* Subdued white */
     margin-bottom: 1em;
-    font-weight: 500;
+    font-weight: 500; /* Medium */
 }
 
 .hero-statement {
     font-size: 1.1em;
-    color: #b0b0b0; /* Slightly dimmer than main text */
+    color: var(--text-color-secondary); /* Subdued white */
     margin-bottom: 2em;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    font-family: var(--font-main); /* Inter */
+    font-weight: 300; /* Light */
 }
 
 .btn-resume {
     display: inline-block;
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     text-decoration: none;
     padding: 12px 30px;
-    background-color: var(--primary-accent);
-    color: var(--bg-color);
+    background-color: var(--text-color-primary); /* White background */
+    color: var(--bg-color); /* Black text */
     border-radius: 5px;
-    font-weight: 700;
+    font-weight: 700; /* Bold */
     font-size: 1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    border: 1px solid var(--primary-accent);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    border: 1px solid var(--text-color-primary); /* White border */
 }
 
 .btn-resume:hover {
-    background-color: transparent;
-    color: var(--primary-accent);
+    background-color: var(--bg-color); /* Black background */
+    color: var(--text-color-primary); /* White text */
     transform: translateY(-2px);
 }
 
@@ -164,17 +162,17 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
-.content-section:last-of-type { /* For contact section if it's the last */
+.content-section:last-of-type {
     border-bottom: none;
 }
 
 .section-title {
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: clamp(2em, 5vw, 3em);
-    color: #fff;
+    color: var(--text-color-primary);
     text-align: center;
     margin-bottom: 60px;
-    font-weight: 700;
+    font-weight: 700; /* Bold */
 }
 
 /* Skills Section */
@@ -186,22 +184,25 @@ body {
 }
 
 .skill-item {
-    background-color: rgba(255, 255, 255, 0.03); /* Very subtle background for items */
+    background-color: rgba(255, 255, 255, 0.05); /* Very subtle light background */
     padding: 25px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 
 .skill-item h3 {
-    font-family: var(--font-primary);
-    color: var(--primary-accent);
+    font-family: var(--font-display); /* Space Grotesk */
+    color: var(--text-color-primary);
     font-size: 1.3em;
     margin-bottom: 10px;
+    font-weight: 500; /* Medium */
 }
 
 .skill-item p {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 300; /* Light */
     font-size: 0.95em;
-    color: #b0b0b0;
+    color: var(--text-color-secondary);
 }
 
 /* Projects Showcase */
@@ -220,48 +221,55 @@ body {
 }
 
 .project-entry h3 {
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: 1.5em;
-    color: var(--text-color); /* White for project titles */
+    color: var(--text-color-primary);
     margin-bottom: 8px;
+    font-weight: 500; /* Medium */
 }
 
 .project-entry p {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
     font-size: 1em;
-    color: #b0b0b0;
-    max-width: 800px; /* Limit line length for readability */
+    color: var(--text-color-secondary);
+    max-width: 800px;
 }
 
 /* Experience Section */
 .experience-entry {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.05); /* Very subtle light background */
     padding: 30px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 
-.experience-entry h3 {
-    font-family: var(--font-primary);
+.experience-entry h3 { /* Company Name */
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: 1.6em;
-    color: #fff;
+    color: var(--text-color-primary);
+    font-weight: 700; /* Bold */
 }
 
 .experience-entry .role-title {
-    font-family: var(--font-primary);
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: 1.2em;
-    color: var(--primary-accent);
+    color: var(--text-color-primary); /* Primary white for emphasis */
     margin-bottom: 5px;
-    font-weight: 500;
+    font-weight: 500; /* Medium */
 }
 
 .experience-entry .dates {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 300; /* Light */
     font-size: 0.9em;
-    color: #888;
+    color: var(--text-color-secondary);
+    opacity: 0.8;
     margin-bottom: 15px;
 }
 
 .responsibilities {
-    list-style: none; /* Remove default bullets */
+    list-style: none;
     padding-left: 0;
 }
 
@@ -269,39 +277,49 @@ body {
     margin-bottom: 10px;
     padding-left: 20px;
     position: relative;
-    color: #b0b0b0;
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
+    color: var(--text-color-secondary);
 }
 
-.responsibilities li::before { /* Custom bullet */
-    content: '▹'; /* Or any other character */
+.responsibilities li::before {
+    content: '▹';
     position: absolute;
     left: 0;
-    color: var(--primary-accent);
+    color: var(--text-color-primary); /* White bullet */
     font-weight: bold;
 }
 .responsibilities li strong {
-    color: var(--text-color); /* Make strong text stand out a bit more */
-    font-weight: 500;
+    font-family: var(--font-main); /* Inter for consistency within list items */
+    color: var(--text-color-primary);
+    font-weight: 400; /* Use Inter's regular, as bold might not be loaded or desired for this small emphasis */
+    /* If a stronger emphasis is needed and Space Grotesk is desired for 'strong':
+    font-family: var(--font-display);
+    font-weight: 400; // Space Grotesk Regular for 'strong'
+    */
 }
 
 /* Education Section */
 .education-entry {
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.05); /* Very subtle light background */
     padding: 30px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     max-width: 600px;
     margin: 0 auto;
 }
-.education-entry h3 {
-    font-family: var(--font-primary);
+.education-entry h3 { /* University Name */
+    font-family: var(--font-display); /* Space Grotesk */
     font-size: 1.5em;
-    color: var(--primary-accent);
+    color: var(--text-color-primary);
+    font-weight: 500; /* Medium */
 }
 .education-entry p {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
     margin-bottom: 5px;
-    color: #b0b0b0;
+    color: var(--text-color-secondary);
 }
 
 
@@ -312,26 +330,29 @@ body {
 }
 
 .contact-section p {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
     font-size: 1.1em;
     margin-bottom: 15px;
-    color: #b0b0b0;
+    color: var(--text-color-secondary);
 }
 .contact-section p:first-of-type { /* "Interested in..." */
     font-size: 1.3em;
-    color: var(--text-color);
+    color: var(--text-color-primary);
     margin-bottom: 25px;
 }
 
 .contact-link {
-    color: var(--primary-accent);
+    font-family: var(--font-main); /* Inter */
+    font-weight: 400; /* Regular */
+    color: var(--text-color-primary);
     text-decoration: none;
-    font-weight: 500;
     font-size: 1.2em;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .contact-link:hover {
-    color: #fff;
+    color: var(--text-color-primary);
     text-decoration: underline;
 }
 
@@ -340,12 +361,14 @@ body {
     text-align: center;
     padding: 40px 0;
     border-top: 1px solid var(--border-color);
-    background-color: var(--bg-color); /* Ensure footer matches body */
+    background-color: var(--bg-color);
 }
 
 .site-footer p {
+    font-family: var(--font-main); /* Inter */
+    font-weight: 300; /* Light */
     font-size: 0.9em;
-    color: #777;
+    color: rgba(255, 255, 255, 0.5); /* More subdued white for footer */
 }
 
 /* Responsive */
@@ -357,7 +380,7 @@ body {
     .nav-links a { margin: 0 10px 10px; }
     .nav-links { text-align: center;}
 
-    .hero { min-height: auto; padding: 120px 20px 60px; } /* Adjust padding for mobile nav */
+    .hero { min-height: auto; padding: 120px 20px 60px; }
 
     .section-title { font-size: clamp(1.8em, 6vw, 2.5em); }
 }
