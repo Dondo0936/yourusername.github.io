@@ -1,13 +1,14 @@
 :root {
-    --bg-color: #0D0D0D; /* Very dark, sophisticated gray */
-    --text-color-primary: #F0F0F0; /* Off-white, softer than pure white */
-    --text-color-secondary: #A0A0A0; /* Lighter gray for secondary text */
-    --border-color: rgba(240, 240, 240, 0.15); /* Subtle light border */
-    --card-bg-color: rgba(240, 240, 240, 0.03); /* Very subtle background for cards */
-    --hover-accent-color: #FFFFFF; /* Pure white for hover highlights */
+    --bg-color: #0D0D0D;
+    --text-color-primary: #F0F0F0;
+    --text-color-secondary: #A0A0A0;
+    --border-color: rgba(240, 240, 240, 0.15);
+    --card-bg-color: rgba(240, 240, 240, 0.03);
+    --hover-accent-color: #FFFFFF;
 
-    --font-display: 'Space Grotesk', sans-serif; /* For impactful titles, logo */
-    --font-body: 'Inter', sans-serif;       /* For body text, details, nav links */
+    /* --- Font Change: Unifying with Inter --- */
+    --font-primary: 'Inter', sans-serif; /* Main font for everything */
+    /* --font-display: 'Space Grotesk', sans-serif; /* REMOVED or repurposed if needed */
 
     --transition-speed: 0.3s;
     --transition-timing: ease-in-out;
@@ -20,19 +21,19 @@
 }
 
 html {
-    scroll-behavior: smooth; /* For smooth scrolling when nav links are clicked */
+    scroll-behavior: smooth;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color-primary);
-    font-family: var(--font-body);
+    font-family: var(--font-primary); /* Using Inter as primary */
     font-weight: 300; /* Inter Light as default body weight */
     line-height: 1.7;
     overflow-x: hidden;
     position: relative;
-    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit */
-    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .background-glow {
@@ -52,7 +53,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(13, 13, 13, 0.7); /* Slightly transparent dark bg */
+    background-color: rgba(13, 13, 13, 0.7);
     backdrop-filter: blur(12px);
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
@@ -66,9 +67,9 @@ body {
 }
 
 .nav-logo {
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     font-size: 1.9em;
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 600; /* Inter SemiBold for elegance */
     color: var(--text-color-primary);
     text-decoration: none;
     letter-spacing: -0.5px;
@@ -78,7 +79,7 @@ body {
     color: var(--text-color-secondary);
     text-decoration: none;
     margin-left: 30px;
-    font-family: var(--font-body);
+    font-family: var(--font-primary); /* Inter */
     font-weight: 400; /* Inter Regular */
     font-size: 0.9em;
     transition: color var(--transition-speed) var(--transition-timing);
@@ -111,6 +112,7 @@ body {
     border: 1px solid var(--text-color-secondary);
     border-radius: 5px;
     color: var(--text-color-secondary);
+    font-weight: 500; /* Inter Medium for CTA */
     transition: all var(--transition-speed) var(--transition-timing);
 }
 .nav-links a.nav-cta:hover {
@@ -118,7 +120,7 @@ body {
     color: var(--hover-accent-color);
     background-color: rgba(240, 240, 240, 0.05);
 }
-.nav-links a.nav-cta::after { /* Remove underline for CTA button */
+.nav-links a.nav-cta::after {
     display: none;
 }
 
@@ -138,17 +140,17 @@ body {
 }
 
 .hero-title {
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     font-size: clamp(3.5em, 8vw, 6em);
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 700; /* Inter Bold for strong impact */
     color: var(--text-color-primary);
     line-height: 1.05;
     margin-bottom: 0.25em;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.03em; /* Tighten for large display text */
 }
 
 .hero-subtitle {
-    font-family: var(--font-body);
+    font-family: var(--font-primary); /* Inter */
     font-weight: 400; /* Inter Regular */
     font-size: clamp(1.3em, 3.5vw, 2em);
     color: var(--text-color-secondary);
@@ -170,8 +172,8 @@ body {
 
 .btn-resume {
     display: inline-block;
-    font-family: var(--font-display);
-    font-weight: 500; /* Space Grotesk Medium */
+    font-family: var(--font-primary); /* Inter */
+    font-weight: 500; /* Inter Medium */
     text-decoration: none;
     padding: 14px 35px;
     background-color: var(--text-color-primary);
@@ -200,22 +202,33 @@ body {
 }
 
 .section-title {
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     font-size: clamp(2.2em, 5.5vw, 3.5em);
     color: var(--text-color-primary);
     text-align: center;
     margin-bottom: 70px;
-    font-weight: 500; /* Space Grotesk Medium */
-    letter-spacing: -0.02em;
+    font-weight: 600; /* Inter SemiBold */
+    letter-spacing: -0.02em; /* Refined spacing */
 }
 
-/* Skills Section */
+/* Skills Section --- MODIFIED GRID --- */
 .skills-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 35px;
+    /* Default to 2 columns on medium screens and up */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px; /* Slightly reduced gap for 2/4 column layout */
     text-align: left;
 }
+
+/* On larger screens, go to 4 columns */
+@media (min-width: 1100px) { /* Adjust this breakpoint as needed */
+    .skills-list {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px; /* Further adjust gap if needed for 4 columns */
+    }
+}
+/* On smaller screens (mobile), it will be 1 column due to existing @media (max-width: 768px) rule below */
+
 
 .skill-item {
     background-color: var(--card-bg-color);
@@ -231,11 +244,11 @@ body {
 }
 
 .skill-item h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     color: var(--text-color-primary);
-    font-size: 1.4em;
+    font-size: 1.3em; /* Slightly reduced if too dominant with Inter SemiBold */
     margin-bottom: 12px;
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 600; /* Inter SemiBold */
 }
 
 .skill-item p {
@@ -251,12 +264,12 @@ body {
 }
 
 .project-entry {
-    padding-bottom: 30px; /* Adjusted from 20px if it was too tight with skills */
+    padding-bottom: 30px;
     border-bottom: 1px dashed var(--border-color);
     transition: opacity var(--transition-speed) var(--transition-timing);
 }
 .project-entry:hover {
-    opacity: 0.85; /* You can adjust this, or apply hover to h3 a for more direct feedback */
+    opacity: 0.85;
 }
 
 .project-entry:last-child {
@@ -264,15 +277,14 @@ body {
     padding-bottom: 0;
 }
 
-.project-entry h3 { /* Base style for the h3 tag itself */
-    font-family: var(--font-display);
+.project-entry h3 {
+    font-family: var(--font-primary); /* Inter */
     font-size: 1.6em;
-    color: var(--text-color-primary); /* This will be overridden by the 'a' tag style if present */
     margin-bottom: 10px;
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 600; /* Inter SemiBold */
 }
 
-.project-entry h3 a { /* Style for the link within the h3 */
+.project-entry h3 a {
     color: var(--text-color-primary);
     text-decoration: none;
     transition: color var(--transition-speed) var(--transition-timing);
@@ -285,7 +297,7 @@ body {
     text-underline-offset: 3px;
 }
 
-.project-entry p { /* Style for the main description paragraph */
+.project-entry p {
     font-size: 1.05em;
     color: var(--text-color-secondary);
     font-weight: 300; /* Inter Light */
@@ -293,14 +305,13 @@ body {
     line-height: 1.8;
 }
 
-.project-skills { /* Style for the new skills paragraph */
-    font-family: var(--font-body);
+.project-skills {
+    font-family: var(--font-primary); /* Inter */
     font-size: 0.9em;
     color: var(--text-color-secondary);
     opacity: 0.85;
     margin-top: 12px;
     font-weight: 300; /* Inter Light */
-    /* font-style: italic; */ /* Optional: if you prefer italic */
 }
 
 
@@ -319,15 +330,15 @@ body {
 }
 
 .experience-entry h3 { /* Company Name */
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     font-size: 1.7em;
     color: var(--text-color-primary);
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 600; /* Inter SemiBold */
 }
 
 .experience-entry .role-title {
-    font-family: var(--font-body);
-    font-weight: 400; /* Inter Regular */
+    font-family: var(--font-primary); /* Inter */
+    font-weight: 500; /* Inter Medium */
     font-size: 1.25em;
     color: var(--text-color-primary);
     opacity: 0.9;
@@ -369,7 +380,7 @@ body {
 }
 .responsibilities li strong {
     color: var(--text-color-primary);
-    font-weight: 400; /* Inter Regular for strong text */
+    font-weight: 500; /* Inter Medium for strong text */
 }
 
 /* Education Section */
@@ -389,10 +400,10 @@ body {
 }
 
 .education-entry h3 { /* University Name */
-    font-family: var(--font-display);
+    font-family: var(--font-primary); /* Inter */
     font-size: 1.6em;
     color: var(--text-color-primary);
-    font-weight: 500; /* Space Grotesk Medium */
+    font-weight: 600; /* Inter SemiBold */
 }
 .education-entry p {
     margin-bottom: 8px;
@@ -452,6 +463,12 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1099px) and (min-width: 769px) { /* For tablets and smaller desktops */
+    .skills-list {
+        grid-template-columns: repeat(2, 1fr); /* Ensure 2 columns if not 4 */
+    }
+}
+
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
@@ -486,7 +503,10 @@ body {
     .section-title { font-size: clamp(2em, 7vw, 2.8em); margin-bottom: 50px;}
     .content-section { padding: 70px 0; }
 
-    .skills-list { grid-template-columns: 1fr; gap: 25px; }
+    .skills-list {
+        grid-template-columns: 1fr; /* Single column for skills on mobile */
+        gap: 25px;
+    }
     .projects-showcase { gap: 30px; }
 
     .contact-section { padding: 70px 0; }
