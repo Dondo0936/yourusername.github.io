@@ -3,12 +3,17 @@
     --text-color-primary: #F0F0F0;
     --text-color-secondary: #A0A0A0;
     --border-color: rgba(240, 240, 240, 0.15);
-    --card-bg-color: rgba(240, 240, 240, 0.03);
+    --card-bg-color: rgba(30, 30, 30, 0.7); /* Slightly more opaque card bg */
+    --card-border-color: rgba(240, 240, 240, 0.1);
     --hover-accent-color: #FFFFFF;
 
-    /* --- Font Change: Unifying with Inter --- */
-    --font-primary: 'Inter', sans-serif; /* Main font for everything */
-    /* --font-display: 'Space Grotesk', sans-serif; /* REMOVED or repurposed if needed */
+    --font-primary: 'Inter', sans-serif;
+
+    /* --- Subtle Sheen Gradient for Headers --- */
+    --header-sheen-gradient: linear-gradient(180deg,
+        var(--text-color-primary) 70%,
+        rgba(240, 240, 240, 0.75) 100% /* Slightly dimmer at the bottom for sheen */
+    );
 
     --transition-speed: 0.3s;
     --transition-timing: ease-in-out;
@@ -27,8 +32,8 @@ html {
 body {
     background-color: var(--bg-color);
     color: var(--text-color-primary);
-    font-family: var(--font-primary); /* Using Inter as primary */
-    font-weight: 300; /* Inter Light as default body weight */
+    font-family: var(--font-primary);
+    font-weight: 300;
     line-height: 1.7;
     overflow-x: hidden;
     position: relative;
@@ -36,15 +41,25 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.background-glow {
-    display: none;
-}
-
 .container {
     width: 90%;
     max-width: 1000px;
     margin: 0 auto;
 }
+
+/* Helper class for textured text */
+.textured-header {
+    background: var(--header-sheen-gradient);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-fill-color: transparent;
+    /* Fallback for browsers that don't support background-clip: text */
+    color: var(--text-color-primary);
+}
+
 
 /* Navigation */
 .top-nav {
@@ -67,20 +82,28 @@ body {
 }
 
 .nav-logo {
-    font-family: var(--font-primary); /* Inter */
+    font-family: var(--font-primary);
     font-size: 1.9em;
-    font-weight: 600; /* Inter SemiBold for elegance */
-    color: var(--text-color-primary);
-    text-decoration: none;
+    font-weight: 600;
     letter-spacing: -0.5px;
+    /* Applying texture */
+    background: var(--header-sheen-gradient);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-fill-color: transparent;
+    color: var(--text-color-primary); /* Fallback */
+    text-decoration: none;
 }
 
 .nav-links a {
     color: var(--text-color-secondary);
     text-decoration: none;
     margin-left: 30px;
-    font-family: var(--font-primary); /* Inter */
-    font-weight: 400; /* Inter Regular */
+    font-family: var(--font-primary);
+    font-weight: 400;
     font-size: 0.9em;
     transition: color var(--transition-speed) var(--transition-timing);
     position: relative;
@@ -112,7 +135,7 @@ body {
     border: 1px solid var(--text-color-secondary);
     border-radius: 5px;
     color: var(--text-color-secondary);
-    font-weight: 500; /* Inter Medium for CTA */
+    font-weight: 500;
     transition: all var(--transition-speed) var(--transition-timing);
 }
 .nav-links a.nav-cta:hover {
@@ -140,18 +163,26 @@ body {
 }
 
 .hero-title {
-    font-family: var(--font-primary); /* Inter */
+    font-family: var(--font-primary);
     font-size: clamp(3.5em, 8vw, 6em);
-    font-weight: 700; /* Inter Bold for strong impact */
-    color: var(--text-color-primary);
+    font-weight: 700;
     line-height: 1.05;
     margin-bottom: 0.25em;
-    letter-spacing: -0.03em; /* Tighten for large display text */
+    letter-spacing: -0.03em;
+    /* Applying texture */
+    background: var(--header-sheen-gradient);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-fill-color: transparent;
+    color: var(--text-color-primary); /* Fallback */
 }
 
 .hero-subtitle {
-    font-family: var(--font-primary); /* Inter */
-    font-weight: 400; /* Inter Regular */
+    font-family: var(--font-primary);
+    font-weight: 400;
     font-size: clamp(1.3em, 3.5vw, 2em);
     color: var(--text-color-secondary);
     margin-bottom: 1.2em;
@@ -160,7 +191,7 @@ body {
 
 .hero-statement {
     font-size: 1.15em;
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
     color: var(--text-color-secondary);
     opacity: 0.9;
     margin-bottom: 2.5em;
@@ -172,8 +203,8 @@ body {
 
 .btn-resume {
     display: inline-block;
-    font-family: var(--font-primary); /* Inter */
-    font-weight: 500; /* Inter Medium */
+    font-family: var(--font-primary);
+    font-weight: 500;
     text-decoration: none;
     padding: 14px 35px;
     background-color: var(--text-color-primary);
@@ -202,116 +233,196 @@ body {
 }
 
 .section-title {
-    font-family: var(--font-primary); /* Inter */
+    font-family: var(--font-primary);
     font-size: clamp(2.2em, 5.5vw, 3.5em);
-    color: var(--text-color-primary);
     text-align: center;
     margin-bottom: 70px;
-    font-weight: 600; /* Inter SemiBold */
-    letter-spacing: -0.02em; /* Refined spacing */
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    /* Applying texture */
+    background: var(--header-sheen-gradient);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-fill-color: transparent;
+    color: var(--text-color-primary); /* Fallback */
 }
 
-/* Skills Section --- MODIFIED GRID --- */
+/* Skills Section */
 .skills-list {
     display: grid;
-    /* Default to 2 columns on medium screens and up */
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px; /* Slightly reduced gap for 2/4 column layout */
+    gap: 30px;
     text-align: left;
 }
 
-/* On larger screens, go to 4 columns */
-@media (min-width: 1100px) { /* Adjust this breakpoint as needed */
+@media (min-width: 1100px) {
     .skills-list {
         grid-template-columns: repeat(4, 1fr);
-        gap: 25px; /* Further adjust gap if needed for 4 columns */
+        gap: 25px;
     }
 }
-/* On smaller screens (mobile), it will be 1 column due to existing @media (max-width: 768px) rule below */
-
 
 .skill-item {
     background-color: var(--card-bg-color);
     padding: 30px;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--card-border-color);
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 
 .skill-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0, 0.3); /* Slightly stronger shadow */
 }
 
 .skill-item h3 {
-    font-family: var(--font-primary); /* Inter */
-    color: var(--text-color-primary);
-    font-size: 1.3em; /* Slightly reduced if too dominant with Inter SemiBold */
+    font-family: var(--font-primary);
+    color: var(--text-color-primary); /* Keep skill item titles solid for readability */
+    font-size: 1.3em;
     margin-bottom: 12px;
-    font-weight: 600; /* Inter SemiBold */
+    font-weight: 600;
 }
 
 .skill-item p {
     font-size: 0.95em;
     color: var(--text-color-secondary);
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
 }
 
-/* Projects Showcase */
+/* --- Projects Showcase Revamped --- */
 .projects-showcase {
     display: grid;
-    gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); /* Responsive cards */
+    gap: 40px; /* Increased gap for cards */
 }
 
 .project-entry {
-    padding-bottom: 30px;
-    border-bottom: 1px dashed var(--border-color);
-    transition: opacity var(--transition-speed) var(--transition-timing);
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: 10px; /* Slightly more rounded cards */
+    padding: 25px;
+    display: flex; /* For thumbnail and content alignment */
+    flex-direction: column; /* Stack thumbnail above content on small screens */
+    gap: 20px; /* Gap between thumbnail area and content */
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
+    overflow: hidden; /* Ensure contents fit */
 }
+
 .project-entry:hover {
-    opacity: 0.85;
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 10px 25px rgba(0,0,0, 0.35);
 }
 
-.project-entry:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.project-thumbnail-container {
+    flex-shrink: 0; /* Prevent thumbnail container from shrinking */
+    display: flex;
+    justify-content: center; /* Center thumbnail if it's smaller */
+    align-items: flex-start;
 }
 
-.project-entry h3 {
-    font-family: var(--font-primary); /* Inter */
-    font-size: 1.6em;
+.project-thumbnail {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-primary);
+    font-weight: 600; /* Bold text for skill initial */
+    font-size: 1.8em; /* Larger skill initial */
+    color: var(--bg-color); /* Dark text on colored background */
+    /* Dynamic background color from HTML data-attribute */
+    background-color: var(--skill-thumb-color, var(--text-color-secondary)); /* Fallback color */
+    padding: 5px;
+    text-align: center;
+    line-height: 1;
+}
+/* JS will be needed to set --skill-thumb-color from data-skill-color, or do it inline */
+/* For CSS only, we can set a default or target specific ones if skills are fixed */
+.project-thumbnail[data-skill-color] {
+    background-color: attr(data-skill-color color); /* This is not standard CSS to directly use attr() for color like this */
+                                                  /* Let's set specific ones or use a default */
+}
+/* Example of manually setting colors if JS is not used for data-skill-color */
+.project-thumbnail[data-skill-color="#4A90E2"] { background-color: #4A90E2; }
+.project-thumbnail[data-skill-color="#FFD43B"] { background-color: #FFD43B; }
+.project-thumbnail[data-skill-color="#34A853"] { background-color: #34A853; }
+.project-thumbnail[data-skill-color="#EA4335"] { background-color: #EA4335; }
+
+
+.project-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: inherit; /* If image itself needs rounding */
+}
+
+.project-thumbnail span {
+    display: block;
+}
+
+.project-content {
+    flex-grow: 1; /* Content takes remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+.project-content h3 {
+    font-family: var(--font-primary);
+    font-size: 1.4em; /* Adjusted size for card layout */
     margin-bottom: 10px;
-    font-weight: 600; /* Inter SemiBold */
+    font-weight: 600;
+    line-height: 1.3;
 }
 
-.project-entry h3 a {
+.project-content h3 a {
     color: var(--text-color-primary);
     text-decoration: none;
     transition: color var(--transition-speed) var(--transition-timing);
 }
 
-.project-entry h3 a:hover {
+.project-content h3 a:hover {
     color: var(--hover-accent-color);
     text-decoration: underline;
     text-decoration-color: var(--hover-accent-color);
     text-underline-offset: 3px;
 }
 
-.project-entry p {
-    font-size: 1.05em;
+.project-content p { /* Description */
+    font-size: 0.95em; /* Adjusted for card */
     color: var(--text-color-secondary);
-    font-weight: 300; /* Inter Light */
-    max-width: 800px;
-    line-height: 1.8;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 15px; /* Space before skills */
 }
 
 .project-skills {
-    font-family: var(--font-primary); /* Inter */
-    font-size: 0.9em;
+    font-family: var(--font-primary);
+    font-size: 0.85em; /* Smaller skills text */
     color: var(--text-color-secondary);
-    opacity: 0.85;
-    margin-top: 12px;
-    font-weight: 300; /* Inter Light */
+    opacity: 0.8;
+    margin-top: auto; /* Pushes skills to the bottom of the card if content varies */
+    font-weight: 300;
+}
+
+@media (min-width: 600px) { /* Adjust breakpoint for side-by-side thumbnail */
+    .project-entry {
+        flex-direction: row; /* Thumbnail beside content */
+        align-items: flex-start; /* Align items to the top */
+    }
+    .project-thumbnail-container {
+        justify-content: flex-start; /* Align thumbnail to the left */
+        margin-right: 20px; /* Space between thumbnail and content */
+        margin-bottom: 0; /* Remove bottom margin if any */
+    }
+    .project-thumbnail {
+        width: 60px; /* Adjust size for side-by-side */
+        height: 60px;
+        font-size: 1.5em;
+    }
 }
 
 
@@ -320,25 +431,25 @@ body {
     background-color: var(--card-bg-color);
     padding: 35px;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--card-border-color);
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 
 .experience-entry:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0, 0.3);
 }
 
-.experience-entry h3 { /* Company Name */
-    font-family: var(--font-primary); /* Inter */
+.experience-entry h3 {
+    font-family: var(--font-primary);
     font-size: 1.7em;
     color: var(--text-color-primary);
-    font-weight: 600; /* Inter SemiBold */
+    font-weight: 600;
 }
 
 .experience-entry .role-title {
-    font-family: var(--font-primary); /* Inter */
-    font-weight: 500; /* Inter Medium */
+    font-family: var(--font-primary);
+    font-weight: 500;
     font-size: 1.25em;
     color: var(--text-color-primary);
     opacity: 0.9;
@@ -351,7 +462,7 @@ body {
     color: var(--text-color-secondary);
     opacity: 0.7;
     margin-bottom: 20px;
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
 }
 
 .responsibilities {
@@ -364,7 +475,7 @@ body {
     padding-left: 25px;
     position: relative;
     color: var(--text-color-secondary);
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
     line-height: 1.75;
 }
 
@@ -380,7 +491,7 @@ body {
 }
 .responsibilities li strong {
     color: var(--text-color-primary);
-    font-weight: 500; /* Inter Medium for strong text */
+    font-weight: 500;
 }
 
 /* Education Section */
@@ -389,26 +500,26 @@ body {
     background-color: var(--card-bg-color);
     padding: 35px;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--card-border-color);
     max-width: 650px;
     margin: 0 auto;
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 .education-entry:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0, 0.3);
 }
 
-.education-entry h3 { /* University Name */
-    font-family: var(--font-primary); /* Inter */
+.education-entry h3 {
+    font-family: var(--font-primary);
     font-size: 1.6em;
     color: var(--text-color-primary);
-    font-weight: 600; /* Inter SemiBold */
+    font-weight: 600;
 }
 .education-entry p {
     margin-bottom: 8px;
     color: var(--text-color-secondary);
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
 }
 
 
@@ -422,19 +533,19 @@ body {
     font-size: 1.15em;
     margin-bottom: 20px;
     color: var(--text-color-secondary);
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
 }
-.contact-section p:first-of-type { /* "Interested in..." */
+.contact-section p:first-of-type {
     font-size: 1.4em;
     color: var(--text-color-primary);
     margin-bottom: 30px;
-    font-weight: 400; /* Inter Regular */
+    font-weight: 400;
 }
 
 .contact-link {
     color: var(--text-color-primary);
     text-decoration: none;
-    font-weight: 400; /* Inter Regular */
+    font-weight: 400;
     font-size: 1.25em;
     transition: color var(--transition-speed) var(--transition-timing), text-decoration-color var(--transition-speed) var(--transition-timing);
     text-decoration: underline;
@@ -459,13 +570,13 @@ body {
     font-size: 0.9em;
     color: var(--text-color-secondary);
     opacity: 0.7;
-    font-weight: 300; /* Inter Light */
+    font-weight: 300;
 }
 
-/* Responsive */
-@media (max-width: 1099px) and (min-width: 769px) { /* For tablets and smaller desktops */
+/* Responsive Adjustments */
+@media (max-width: 1099px) and (min-width: 769px) {
     .skills-list {
-        grid-template-columns: repeat(2, 1fr); /* Ensure 2 columns if not 4 */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -474,9 +585,7 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    .nav-logo {
-        margin-bottom: 20px;
-    }
+    .nav-logo { margin-bottom: 20px; }
     .nav-links {
         text-align: center;
         width: 100%;
@@ -484,30 +593,26 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    .nav-links a {
-        margin: 0 0 15px 0;
-        font-size: 1em;
-    }
-    .nav-links a.nav-cta {
-        margin-bottom: 0;
-        padding: 10px 20px;
-    }
+    .nav-links a { margin: 0 0 15px 0; font-size: 1em; }
+    .nav-links a.nav-cta { margin-bottom: 0; padding: 10px 20px; }
 
-    .hero {
-        min-height: auto;
-        padding: 140px 20px 70px;
-    }
+    .hero { min-height: auto; padding: 140px 20px 70px; }
     .hero-title { font-size: clamp(2.5em, 10vw, 4em); }
     .hero-subtitle { font-size: clamp(1.1em, 4vw, 1.6em); }
 
     .section-title { font-size: clamp(2em, 7vw, 2.8em); margin-bottom: 50px;}
     .content-section { padding: 70px 0; }
 
-    .skills-list {
-        grid-template-columns: 1fr; /* Single column for skills on mobile */
-        gap: 25px;
+    .skills-list { grid-template-columns: 1fr; gap: 25px; }
+    
+    .projects-showcase {
+        grid-template-columns: 1fr; /* Single column for project cards on mobile */
+        gap: 30px;
     }
-    .projects-showcase { gap: 30px; }
+    /* .project-entry default flex-direction is column, which is good for mobile */
 
     .contact-section { padding: 70px 0; }
 }
+
+/* Ensure .background-glow is truly gone if not used */
+.background-glow { display: none !important; }
