@@ -316,32 +316,36 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0, 0.35);
 }
 
-.project-thumbnail-container {
-    flex-shrink: 0; /* Prevent thumbnail container from shrinking */
-    display: flex;
-    justify-content: center; /* Center thumbnail if it's smaller */
-    align-items: flex-start;
-}
-
 .project-thumbnail {
-    width: 70px; /* Or your desired size */
-    height: 70px; /* Or your desired size */
-    border-radius: 8px; /* Optional: if you want the container to be rounded */
+    width: 50px; /* Fixed width for all logos */
+    height: 50px; /* Fixed height for all logos */
+    border-radius: 8px; /* Optional: keeps rounded corners */
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: transparent; /* Explicitly set background to transparent */
-    padding: 0; /* Remove padding if you want the image to fill the container */
-    /* Remove font-family, font-weight, font-size, color if not using text fallbacks */
+    background-color: transparent;
+    padding: 0;
 }
+
 .project-thumbnail img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* Ensures the entire image is visible and maintains aspect ratio */
+    object-fit: contain; /* Ensures logos fit without distortion */
 }
 
-.project-thumbnail span {
-    display: none; /* Hide the span if you're only using images */
+.project-thumbnail-container {
+    display: flex;
+    justify-content: center; /* Centers logo horizontally */
+    align-items: center; /* Centers logo vertically */
+    margin-bottom: 10px; /* Space below on smaller screens */
+}
+
+@media (min-width: 600px) {
+    .project-thumbnail-container {
+        justify-content: flex-start; /* Aligns logo to left on larger screens */
+        margin-right: 20px; /* Space between logo and content */
+        margin-bottom: 0; /* No bottom margin on larger screens */
+    }
 }
 
 .project-content {
