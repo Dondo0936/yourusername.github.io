@@ -316,10 +316,11 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0, 0.35);
 }
 
+/* Fixed the thumbnail size here */
 .project-thumbnail {
-    width: 50px; /* Fixed width for all logos */
-    height: 50px; /* Fixed height for all logos */
-    border-radius: 8px; /* Optional: keeps rounded corners */
+    width: 40px; /* Reduced from 50px */
+    height: 40px; /* Reduced from 50px */
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -335,17 +336,9 @@ body {
 
 .project-thumbnail-container {
     display: flex;
-    justify-content: center; /* Centers logo horizontally */
-    align-items: center; /* Centers logo vertically */
-    margin-bottom: 10px; /* Space below on smaller screens */
-}
-
-@media (min-width: 600px) {
-    .project-thumbnail-container {
-        justify-content: flex-start; /* Aligns logo to left on larger screens */
-        margin-right: 20px; /* Space between logo and content */
-        margin-bottom: 0; /* No bottom margin on larger screens */
-    }
+    justify-content: flex-start; /* Left-align the logo by default */
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .project-content {
@@ -356,7 +349,7 @@ body {
 
 .project-content h3 {
     font-family: var(--font-primary);
-    font-size: 1.4em; /* Adjusted size for card layout */
+    font-size: 1.3em; /* Slightly reduced from 1.4em */
     margin-bottom: 10px;
     font-weight: 600;
     line-height: 1.3;
@@ -399,16 +392,15 @@ body {
     }
     .project-thumbnail-container {
         justify-content: flex-start; /* Align thumbnail to the left */
-        margin-right: 20px; /* Space between thumbnail and content */
+        margin-right: 15px; /* Reduced from 20px */
         margin-bottom: 0; /* Remove bottom margin if any */
+        flex-shrink: 0; /* Prevent thumbnail from shrinking */
     }
     .project-thumbnail {
-        width: 60px; /* Adjust size for side-by-side */
-        height: 60px;
-        font-size: 1.5em;
+        width: 45px; /* Reduced from 60px */
+        height: 45px; /* Reduced from 60px */
     }
 }
-
 
 /* Experience Section */
 .experience-entry {
@@ -593,7 +585,17 @@ body {
         grid-template-columns: 1fr; /* Single column for project cards on mobile */
         gap: 30px;
     }
-    /* .project-entry default flex-direction is column, which is good for mobile */
+    
+    /* Additional mobile adjustments for project thumbnails */
+    .project-thumbnail {
+        width: 36px; /* Even smaller on mobile */
+        height: 36px;
+    }
+    
+    /* Further reduced padding for project entries on mobile */
+    .project-entry {
+        padding: 20px;
+    }
 
     .contact-section { padding: 70px 0; }
 }
