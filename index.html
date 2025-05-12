@@ -5,134 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tien Dat Do - Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="hero">
-        <div class="container">
-            <h1>Tien Dat Do</h1>
-            <p class="subtitle">Data-Driven Finance & Automation Specialist</p>
-            <p class="intro">
-                Data Analyst and Finance professional specializing in process automation, financial modeling, and business intelligence. [cite: 1]
-            </p>
-            <div class="cta-buttons">
-                <a href="#contact" class="btn btn-primary">Get in Touch</a>
-                <a href="DoTienDat_Resume_May2025.pdf" class="btn btn-secondary" target="_blank">View Resume</a>
+    <div class="background-glow"></div>
+
+    <nav class="top-nav">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">TD</a>
+            <div class="nav-links">
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact" class="nav-cta">Contact</a>
             </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title">Tien Dat Do</h1>
+            <p class="hero-subtitle">Data-Driven Finance & Process Automation</p>
+            <div class="hero-statement">
+                <p>Transforming complex data into actionable insights and streamlining financial operations through innovative automation.</p>
+            </div>
+             <a href="DoTienDat_Resume_May2025.pdf" class="btn-resume" target="_blank">View Full Resume</a>
         </div>
     </header>
 
     <main>
-        <section id="skills" class="skills-section">
+        <section id="skills" class="content-section">
             <div class="container">
-                <h2>Skills</h2>
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3>Data Analysis & Business Intelligence</h3>
-                        <ul>
-                            <li>Excel (Advanced Functions, VBA, Power Query) [cite: 1]</li>
-                            <li>Google Sheets (Custom Scripts) [cite: 1]</li>
-                            <li>Tableau [cite: 1]</li>
-                            <li>Power BI [cite: 1]</li>
-                        </ul>
+                <h2 class="section-title">Core Competencies</h2>
+                <div class="skills-list">
+                    <div class="skill-item">
+                        <h3>Data Analysis & BI</h3>
+                        <p>Excel (VBA, Power Query), Google Sheets (Scripts), Tableau, Power BI</p>
                     </div>
-                    <div class="skill-category">
+                    <div class="skill-item">
                         <h3>Programming</h3>
-                        <ul>
-                            <li>Python (pandas, NumPy, statsmodels, matplotlib, seaborn) [cite: 2]</li>
-                        </ul>
+                        <p>Python (Pandas, NumPy, Statsmodels, Matplotlib, Seaborn)</p>
                     </div>
-                     <div class="skill-category">
-                        <h3>Other</h3>
-                        <ul>
-                            <li>Financial Modeling</li>
-                            <li>Process Automation</li>
-                            <li>Client Communication [cite: 19]</li>
-                        </ul>
+                    <div class="skill-item">
+                        <h3>Financial Acumen</h3>
+                        <p>Financial Modeling, Forecasting, Budgeting, Performance Analysis</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Process Automation</h3>
+                        <p>BOM/MRP Automation, Workflow Optimization (n8n, LangChain)</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="projects-section">
+        <section id="projects" class="content-section">
             <div class="container">
-                <h2>Key Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <h3>Email Classification, Attachments & Data Extraction AI Agent</h3>
-                        <p><strong>Role:</strong> Developer</p>
-                        <p><strong>Technologies:</strong> n8n, LangChain, AI, Gmail API, Google Sheets, OCR [cite: 3]</p>
-                        <p>Automated email classification, attachment processing (PDF invoices/POs), data extraction to JSON, and Google Sheets updates. [cite: 3, 4, 5]</p>
-                        <a href="#" class="project-link">View on Upwork [cite: 3]</a>
+                <h2 class="section-title">Signature Projects</h2>
+                <div class="projects-showcase">
+                    <div class="project-entry">
+                        <h3>AI-Powered Email & Data Agent</h3>
+                        <p>Developed an AI agent using n8n and LangChain for automated email classification, PDF data extraction (OCR), and Google Sheets integration. (Upwork)</p>
                     </div>
-                    <div class="project-card">
-                        <h3>Financial Modeling and Valuation Project</h3>
-                        <p><strong>Role:</strong> Data Analyst and Visualizer</p>
-                        <p><strong>Technologies:</strong> Python, Excel [cite: 6]</p>
-                        <p>Conducted in-depth financial analysis using historical data, created predictive models, sensitivity analyses, and interactive visualizations. [cite: 6, 7]</p>
-                        <a href="#" class="project-link">View on Drive [cite: 6]</a>
+                    <div class="project-entry">
+                        <h3>Financial Modeling & Valuation</h3>
+                        <p>Led in-depth financial analysis, creating predictive models and sensitivity analyses with Python and Excel for market risk evaluation. (Drive)</p>
                     </div>
-                    <div class="project-card">
-                        <h3>Data Extraction Automation</h3>
-                        <p><strong>Role:</strong> Developer</p>
-                        <p><strong>Technologies:</strong> Google Apps Script [cite: 8]</p>
-                        <p>Automated recursive folder processing, file filtering, data extraction from specific sheets, data cleaning, and automated pasting. [cite: 8, 9]</p>
-                        <a href="#" class="project-link">View on GitHub [cite: 8]</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>Auto Upload Attachments from Gmail to Google Drive</h3>
-                        <p><strong>Role:</strong> Developer</p>
-                        <p><strong>Technologies:</strong> Google Apps Script [cite: 10]</p>
-                        <p>Found specific emails, extracted subject data (PO numbers, names, dates), saved attachments with unique names, and organized in Google Drive. [cite: 10, 11]</p>
-                        <a href="#" class="project-link">View on GitHub [cite: 10]</a>
+                    <div class="project-entry">
+                        <h3>Google Workspace Automation</h3>
+                        <p>Engineered Google Apps Scripts for automated data extraction from Drive and streamlined Gmail attachment processing to Drive. (GitHub)</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="experience" class="experience-section">
+        <section id="experience" class="content-section">
             <div class="container">
-                <h2>Experience</h2>
-                <div class="experience-item">
-                    <h3>Finance Assistant to CEO (Core Team Member)</h3>
-                    <p class="company-name">VinMake (Backed by Do Ventures) | Ho Chi Minh city [cite: 12, 13]</p>
-                    <p class="dates">March 2024 - Now [cite: 13]</p>
-                    <ul>
-                        <li>Played a foundational role in the company's growth, transitioning from Manufacturing Merchandiser to Business Process Analyst, and now focusing on Finance. [cite: 13]</li>
-                        <li><strong>Finance (50%):</strong> Managed financial forecasting, budgeting, and reporting directly to CEO. [cite: 14] Developed financial models and performance dashboards using Excel and Google Sheets. [cite: 15] Analyzed revenue streams and cost drivers to improve profitability and working capital visibility. [cite: 16]</li>
-                        <li><strong>Business Process Analysis & Implementation (30%):</strong> Automated Bill of Materials (BOM) and Material Requirements Planning (MRP) processes, reducing manual efforts by 40%. [cite: 17] Optimized Procurement and Payment Entry workflows, enhancing efficiency by 20%. [cite: 18]</li>
-                        <li><strong>Client Communication (20%):</strong> Acted as the primary representative for client communications, managing expectations and addressing escalations. [cite: 19] Delivered critical updates on production and export timelines, ensuring clarity and satisfaction. [cite: 20]</li>
+                <h2 class="section-title">Professional Journey</h2>
+                <div class="experience-entry">
+                    <h3>VinMake (Backed by Do Ventures)</h3>
+                    <p class="role-title">Finance Assistant to CEO (Core Team Member)</p>
+                    <p class="dates">Ho Chi Minh city | March 2024 - Present</p>
+                    <ul class="responsibilities">
+                        <li>Pivotal in company growth, evolving from Manufacturing Merchandiser & Business Process Analyst.</li>
+                        <li><strong>Finance:</strong> Direct financial forecasting, budgeting, and CEO reporting. Developed key financial models and dashboards (Excel, Google Sheets). Enhanced profitability and working capital visibility through revenue/cost driver analysis.</li>
+                        <li><strong>Process Improvement:</strong> Automated BOM/MRP (40% manual effort reduction). Optimized Procurement & Payment Entry (20% efficiency gain).</li>
+                        <li><strong>Client Relations:</strong> Primary client communicator, managing expectations and critical updates.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="education" class="education-section">
+        <section id="education" class="content-section">
             <div class="container">
-                <h2>Education</h2>
-                <div class="education-item">
+                <h2 class="section-title">Education</h2>
+                 <div class="education-entry">
                     <h3>Western Sydney University</h3>
-                    <p>Bachelor, Applied Finance [cite: 21]</p>
-                    <p>Ho Chi Minh city | Sep 2019 - July 2023 [cite: 21]</p>
-                    <p>GPA: 2.9/4.0 [cite: 21]</p>
+                    <p>Bachelor of Applied Finance</p>
+                    <p>Ho Chi Minh city | Sep 2019 - July 2023 (GPA: 2.9/4.0)</p>
                 </div>
             </div>
         </section>
 
         <section id="contact" class="contact-section">
             <div class="container">
-                <h2>Contact</h2>
-                <p>Email: <a href="mailto:tiendat0936@gmail.com">tiendat0936@gmail.com</a></p>
-                <p>LinkedIn: <a href="YOUR_LINKEDIN_PROFILE_URL_HERE" target="_blank">Your LinkedIn Profile</a></p>
-                <p>GitHub: <a href="YOUR_GITHUB_PROFILE_URL_HERE" target="_blank">Your GitHub Profile</a></p>
+                <h2 class="section-title">Connect</h2>
+                <p>Interested in collaborating or learning more?</p>
+                <p>
+                    <a href="mailto:tiendat0936@gmail.com" class="contact-link">tiendat0936@gmail.com</a>
+                </p>
+                <p>
+                    <a href="www.linkedin.com/in/datdo02112000" target="_blank" class="contact-link">LinkedIn</a> |
+                    <a href="https://dondo0936.github.io/yourusername.github.io/" target="_blank" class="contact-link">GitHub</a>
+                </p>
             </div>
         </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2024 Tien Dat Do. Inspired by x.ai aesthetic.</p>
+            <p>&copy; 2024 Tien Dat Do. All rights reserved.</p>
         </div>
     </footer>
+
 </body>
 </html>
