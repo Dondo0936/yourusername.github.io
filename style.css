@@ -324,44 +324,24 @@ body {
 }
 
 .project-thumbnail {
-    width: 70px;
-    height: 70px;
-    border-radius: 8px;
+    width: 70px; /* Or your desired size */
+    height: 70px; /* Or your desired size */
+    border-radius: 8px; /* Optional: if you want the container to be rounded */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-primary);
-    font-weight: 600; /* Bold text for skill initial */
-    font-size: 1.8em; /* Larger skill initial */
-    color: var(--bg-color); /* Dark text on colored background */
-    /* Dynamic background color from HTML data-attribute */
-    background-color: var(--skill-thumb-color, var(--text-color-secondary)); /* Fallback color */
-    padding: 5px;
-    text-align: center;
-    line-height: 1;
+    background-color: transparent; /* Explicitly set background to transparent */
+    padding: 0; /* Remove padding if you want the image to fill the container */
+    /* Remove font-family, font-weight, font-size, color if not using text fallbacks */
 }
-/* JS will be needed to set --skill-thumb-color from data-skill-color, or do it inline */
-/* For CSS only, we can set a default or target specific ones if skills are fixed */
-.project-thumbnail[data-skill-color] {
-    background-color: attr(data-skill-color color); /* This is not standard CSS to directly use attr() for color like this */
-                                                  /* Let's set specific ones or use a default */
-}
-/* Example of manually setting colors if JS is not used for data-skill-color */
-.project-thumbnail[data-skill-color="#4A90E2"] { background-color: #4A90E2; }
-.project-thumbnail[data-skill-color="#FFD43B"] { background-color: #FFD43B; }
-.project-thumbnail[data-skill-color="#34A853"] { background-color: #34A853; }
-.project-thumbnail[data-skill-color="#EA4335"] { background-color: #EA4335; }
-
-
 .project-thumbnail img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
-    border-radius: inherit; /* If image itself needs rounding */
+    object-fit: contain; /* Ensures the entire image is visible and maintains aspect ratio */
 }
 
 .project-thumbnail span {
-    display: block;
+    display: none; /* Hide the span if you're only using images */
 }
 
 .project-content {
