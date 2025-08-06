@@ -27,7 +27,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 120px; /* Account for fixed navigation */
+    scroll-padding-top: 90px; /* Account for fixed navigation */
 }
 
 body {
@@ -225,10 +225,9 @@ body {
 
 /* Content Sections */
 .content-section {
-    padding: 100px 0 100px 0;
+    padding: 80px 0 80px 0;
     border-bottom: 1px solid var(--border-color);
-    scroll-margin-top: 120px; /* Ensure proper anchor positioning */
-    min-height: 80vh;
+    scroll-margin-top: 90px; /* Ensure proper anchor positioning */
 }
 
 .content-section:last-of-type {
@@ -477,6 +476,10 @@ body {
 }
 
 /* Education Section */
+#education {
+    padding: 60px 0 60px 0; /* Reduced padding for single card section */
+}
+
 .education-entry {
     text-align: center;
     background-color: var(--card-bg-color);
@@ -508,9 +511,9 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: 100px 0 100px 0;
+    padding: 80px 0 80px 0;
     text-align: center;
-    min-height: 80vh;
+    scroll-margin-top: 90px; /* Ensure proper anchor positioning */
 }
 
 .contact-section p {
@@ -590,8 +593,7 @@ body {
 
     .section-title { font-size: clamp(2em, 7vw, 2.8em); margin-bottom: 36px;}
     .content-section { 
-        padding: 60px 0 48px 0; 
-        min-height: auto;
+        padding: 50px 0 40px 0; 
     }
 
     .skills-list { grid-template-columns: 1fr; gap: 25px; }
@@ -613,8 +615,11 @@ body {
     }
 
     .contact-section { 
-        padding: 60px 0 60px 0;
-        min-height: auto;
+        padding: 50px 0 50px 0;
+    }
+    
+    #education {
+        padding: 40px 0 40px 0;
     }
 }
 
