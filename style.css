@@ -231,7 +231,7 @@ body {
 }
 
 #projects {
-    scroll-margin-top: 0px;
+    scroll-margin-top: -50px;
 }
 
 .content-section:last-of-type {
@@ -517,7 +517,7 @@ body {
 .contact-section {
     padding: 80px 0 80px 0;
     text-align: center;
-    scroll-margin-top: -75px;
+    scroll-margin-top: -70px;
 }
 
 .contact-section p {
