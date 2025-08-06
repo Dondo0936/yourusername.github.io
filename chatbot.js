@@ -1319,4 +1319,64 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize section focus manager
     new SectionFocusManager();
+    
+    // Mobile Navigation Toggle
+    class MobileNavigation {
+        constructor() {
+            this.hamburger = document.getElementById('nav-hamburger');
+            this.overlay = document.getElementById('mobile-nav-overlay');
+            this.mobileLinks = this.overlay.querySelectorAll('a');
+            this.init();
+        }
+        
+        init() {
+            if (this.hamburger && this.overlay) {
+                this.hamburger.addEventListener('click', () => this.toggleMenu());
+                
+                // Close menu when clicking on a link
+                this.mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => this.closeMenu());
+                });
+                
+                // Close menu when clicking outside
+                this.overlay.addEventListener('click', (e) => {
+                    if (e.target === this.overlay) {
+                        this.closeMenu();
+                    }
+                });
+                
+                // Close menu on escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+                        this.closeMenu();
+                    }
+                });
+            }
+        }
+        
+        toggleMenu() {
+            const isActive = this.overlay.classList.contains('active');
+            
+            if (isActive) {
+                this.closeMenu();
+            } else {
+                this.openMenu();
+            }
+        }
+        
+        openMenu() {
+            this.hamburger.classList.add('active');
+            this.overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+        
+        closeMenu() {
+            this.hamburger.classList.remove('active');
+            this.overlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    }
+    
+    // Initialize mobile navigation
+    new MobileNavigation();
 });
