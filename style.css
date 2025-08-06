@@ -27,7 +27,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 100px; /* Account for fixed navigation */
+    scroll-padding-top: 120px; /* Account for fixed navigation */
 }
 
 body {
@@ -150,7 +150,7 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: 90vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,9 +225,10 @@ body {
 
 /* Content Sections */
 .content-section {
-    padding: 80px 0 60px 0;
+    padding: 100px 0 100px 0;
     border-bottom: 1px solid var(--border-color);
-    scroll-margin-top: 80px; /* Ensure proper anchor positioning */
+    scroll-margin-top: 120px; /* Ensure proper anchor positioning */
+    min-height: 80vh;
 }
 
 .content-section:last-of-type {
@@ -507,15 +508,8 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: 80px 0 80px 0;
+    padding: 100px 0 100px 0;
     text-align: center;
-    min-height: 100vh; /* Ensure full height for last section */
-}
-
-.contact-section .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     min-height: 80vh;
 }
 
@@ -595,7 +589,10 @@ body {
     .hero-subtitle { font-size: clamp(1.1em, 4vw, 1.6em); }
 
     .section-title { font-size: clamp(2em, 7vw, 2.8em); margin-bottom: 36px;}
-    .content-section { padding: 60px 0 48px 0; }
+    .content-section { 
+        padding: 60px 0 48px 0; 
+        min-height: auto;
+    }
 
     .skills-list { grid-template-columns: 1fr; gap: 25px; }
     
@@ -616,12 +613,8 @@ body {
     }
 
     .contact-section { 
-        padding: 60px 0 60px 0; 
-        min-height: 100vh;
-    }
-    
-    .contact-section .container {
-        min-height: 85vh;
+        padding: 60px 0 60px 0;
+        min-height: auto;
     }
 }
 
