@@ -201,7 +201,7 @@ class PortfolioChatbot {
         
         try {
             // Check if message is about meeting booking first
-            const meetingResponse = this.handleMeetingRequest(message);
+            const meetingResponse = await this.handleMeetingRequest(message);
             if (meetingResponse) {
                 // Handle meeting booking locally
                 this.removeTypingIndicator(typingIndicator);
@@ -668,7 +668,7 @@ Tien Dat's AI Assistant`;
         return durations[type] || 30;
     }
     
-    handleMeetingRequest(message) {
+    async handleMeetingRequest(message) {
         const lowerMessage = message.toLowerCase();
         
         // Check if user wants to schedule a meeting

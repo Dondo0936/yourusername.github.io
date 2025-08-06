@@ -230,6 +230,10 @@ body {
     scroll-margin-top: 90px; /* Ensure proper anchor positioning */
 }
 
+#projects {
+    scroll-margin-top: 183px; /* 90px + 93px more for proper positioning */
+}
+
 .content-section:last-of-type {
     border-bottom: none;
 }
@@ -513,7 +517,7 @@ body {
 .contact-section {
     padding: 80px 0 80px 0;
     text-align: center;
-    scroll-margin-top: 90px; /* Ensure proper anchor positioning */
+    scroll-margin-top: 183px; /* 90px + 93px more for proper positioning */
 }
 
 .contact-section p {
