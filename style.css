@@ -1202,7 +1202,7 @@ body {
 /* Contact Form Styles */
 .contact-form-container {
     max-width: 600px;
-    margin: 24px auto 32px auto;
+    margin: -16px auto 32px auto; /* Moved 40px closer: 24px - 40px = -16px */
     background-color: var(--card-bg-color);
     padding: 32px;
     border-radius: 12px;
@@ -1214,6 +1214,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 
 .form-group {
@@ -1233,6 +1239,10 @@ body {
     font-size: 0.95em;
     outline: none;
     transition: all var(--transition-speed);
+}
+
+.form-group select {
+    padding: 15px 16px; /* Slightly less right padding to align text better */
 }
 
 .form-group input:focus,
@@ -1276,6 +1286,8 @@ body {
     font-size: 0.95em;
     cursor: pointer;
     transition: all var(--transition-speed);
+    flex: 1; /* Make buttons equal width */
+    text-align: center;
 }
 
 .btn-submit {
@@ -1292,7 +1304,6 @@ body {
     background-color: transparent;
     color: var(--text-color-primary);
     border: 1px solid var(--text-color-primary);
-    margin-left: 15px;
 }
 
 .btn-secondary:hover {
@@ -1441,13 +1452,13 @@ body {
     }
     
     .contact-form-container {
-        margin: 16px 20px 24px 20px;
+        margin: -24px 20px 24px 20px; /* Moved 40px closer: 16px - 40px = -24px */
         padding: 24px;
     }
     
-    .btn-secondary {
-        margin-left: 0;
-        margin-top: 10px;
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
     }
     
     .modal-content {
