@@ -228,6 +228,8 @@ body {
     padding: 80px 0 80px 0;
     border-bottom: 1px solid var(--border-color);
     scroll-margin-top: 90px; /* Ensure proper anchor positioning */
+    transition: all 0.8s ease-in-out;
+    position: relative;
 }
 
 #projects {
@@ -518,6 +520,8 @@ body {
     padding: 80px 0 80px 0;
     text-align: center;
     scroll-margin-top: -70px;
+    transition: all 0.8s ease-in-out;
+    position: relative;
 }
 
 .contact-section p {
@@ -629,6 +633,38 @@ body {
 
 /* Ensure .background-glow is truly gone if not used */
 .background-glow { display: none !important; }
+
+/* Section Focus Effects */
+.section-blur {
+    filter: blur(3px);
+    opacity: 0.3;
+    transform: scale(0.98);
+}
+
+.section-focused {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(240, 240, 240, 0.1);
+    border-radius: 8px;
+    background: linear-gradient(135deg, 
+        rgba(240, 240, 240, 0.02) 0%, 
+        rgba(240, 240, 240, 0.01) 100%);
+}
+
+.hero.section-blur {
+    filter: blur(3px);
+    opacity: 0.3;
+    transform: scale(0.98);
+}
+
+.hero.section-focused {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1.01);
+    z-index: 10;
+}
 
 /* Claude AI Chatbot Styles */
 .chatbot-toggle {

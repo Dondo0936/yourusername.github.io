@@ -1219,4 +1219,85 @@ document.addEventListener('DOMContentLoaded', () => {
             chatbotInput.placeholder = placeholders[placeholderIndex];
         }
     }, 3000);
+    
+    // Section Focus Effects
+    class SectionFocusManager {
+        constructor() {
+            this.init();
+        }
+        
+        init() {
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href').substring(1);
+                    this.focusSection(targetId);
+                });
+            });
+            
+            // Clear focus after 3 seconds
+            this.clearFocusTimeout = null;
+        }
+        
+        focusSection(targetId) {
+            // Clear any existing timeout
+            if (this.clearFocusTimeout) {
+                clearTimeout(this.clearFocusTimeout);
+            }
+            
+            // Get all sections
+            const hero = document.querySelector('.hero');
+            const sections = document.querySelectorAll('.content-section, .contact-section');
+            const allSections = [hero, ...sections];
+            
+            // Remove existing classes
+            allSections.forEach(section => {
+                if (section) {
+                    section.classList.remove('section-blur', 'section-focused');
+                }
+            });
+            
+            // Find target section
+            let targetSection = null;
+            if (targetId === 'home' || targetId === '') {
+                targetSection = hero;
+            } else {
+                targetSection = document.getElementById(targetId);
+            }
+            
+            if (targetSection) {
+                // Apply blur to all other sections
+                allSections.forEach(section => {
+                    if (section && section !== targetSection) {
+                        section.classList.add('section-blur');
+                    }
+                });
+                
+                // Focus the target section
+                targetSection.classList.add('section-focused');
+                
+                // Clear focus after 4 seconds
+                this.clearFocusTimeout = setTimeout(() => {
+                    this.clearAllFocus();
+                }, 4000);
+            }
+        }
+        
+        clearAllFocus() {
+            const hero = document.querySelector('.hero');
+            const sections = document.querySelectorAll('.content-section, .contact-section');
+            const allSections = [hero, ...sections];
+            
+            allSections.forEach(section => {
+                if (section) {
+                    section.classList.remove('section-blur', 'section-focused');
+                }
+            });
+        }
+    }
+    
+    // Initialize section focus manager
+    new SectionFocusManager();
 });
