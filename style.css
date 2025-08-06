@@ -519,7 +519,7 @@ body {
 .contact-section {
     padding: 80px 0 80px 0;
     text-align: center;
-    scroll-margin-top: -70px;
+    scroll-margin-top: -65px;
     transition: all 0.8s ease-in-out;
     position: relative;
 }

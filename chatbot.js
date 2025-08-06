@@ -98,10 +98,15 @@ class PortfolioChatbot {
         this.bookedMeetings = [];
         this.userBookingData = null;
         this.sessionId = this.generateSessionId();
-        this.initializeAvailableSlots();
+        
+        // Initialize slots asynchronously to prevent blocking
+        this.initializeAvailableSlots().catch(error => {
+            console.warn('Using fallback slots due to server unavailability');
+            this.availableSlots = this.generateFallbackSlots();
+        });
         
         this.initEventListeners();
-        this.loadConversationHistory();
+        this.resetChatbot(); // Reset chatbot on page load
     }
     
     initEventListeners() {
@@ -382,6 +387,20 @@ class PortfolioChatbot {
         
         // Keep localStorage as fallback
         localStorage.setItem('chatbot_history', JSON.stringify(this.conversationHistory));
+    }
+    
+    resetChatbot() {
+        // Clear conversation history and localStorage
+        this.conversationHistory = [];
+        localStorage.removeItem('chatbot_history');
+        
+        // Clear only dynamic messages, preserve the initial welcome message from HTML
+        const messages = this.chatbotMessages.querySelectorAll('.message');
+        messages.forEach((msg, index) => {
+            if (index > 0) { // Keep the first message (welcome message from HTML)
+                msg.remove();
+            }
+        });
     }
     
     loadConversationHistory() {
