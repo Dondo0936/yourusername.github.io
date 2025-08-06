@@ -95,8 +95,9 @@ class PortfolioChatbot {
         
         // Meeting management
         this.availableSlots = [];
-        this.bookedMeetings = this.loadBookedMeetings();
+        this.bookedMeetings = [];
         this.userBookingData = null;
+        this.sessionId = this.generateSessionId();
         this.initializeAvailableSlots();
         
         this.initEventListeners();
@@ -353,15 +354,33 @@ class PortfolioChatbot {
         this.suggestedQuestions.classList.remove('show');
     }
     
-    saveMessageToHistory(message, type) {
+    async saveMessageToHistory(message, type, userEmail = null) {
         const timestamp = new Date().toISOString();
         this.conversationHistory.push({ message, type, timestamp });
         
-        // Keep only last 50 messages
+        // Keep only last 50 messages locally
         if (this.conversationHistory.length > 50) {
             this.conversationHistory = this.conversationHistory.slice(-50);
         }
         
+        // Save to database
+        try {
+            await fetch('/.netlify/functions/meeting-manager', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'saveConversation',
+                    sessionId: this.sessionId,
+                    userEmail: userEmail,
+                    message: message,
+                    messageType: type
+                })
+            });
+        } catch (error) {
+            console.warn('Failed to save conversation to database:', error);
+        }
+        
+        // Keep localStorage as fallback
         localStorage.setItem('chatbot_history', JSON.stringify(this.conversationHistory));
     }
     
@@ -388,12 +407,16 @@ class PortfolioChatbot {
     }
     
     // Meeting Management Methods
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
     async generateAvailableSlots() {
         try {
             const now = new Date();
             const endDate = new Date(now.getTime() + (14 * 24 * 60 * 60 * 1000)); // 14 days from now
             
-            const response = await fetch('/.netlify/functions/calendar-booking', {
+            const response = await fetch('/.netlify/functions/meeting-manager', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -451,13 +474,27 @@ class PortfolioChatbot {
         return datetime.toISOString().replace(/[-:\.]/g, '').slice(0, -1);
     }
     
-    loadBookedMeetings() {
-        const saved = localStorage.getItem('booked_meetings');
-        return saved ? JSON.parse(saved) : [];
-    }
-    
-    saveBookedMeetings() {
-        localStorage.setItem('booked_meetings', JSON.stringify(this.bookedMeetings));
+    async getUserMeetings(email) {
+        try {
+            const response = await fetch('/.netlify/functions/meeting-manager', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'getUserMeetings',
+                    userEmail: email
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                return data.meetings.filter(m => new Date(m.datetime) > new Date());
+            } else {
+                return [];
+            }
+        } catch (error) {
+            console.error('Error getting user meetings:', error);
+            return [];
+        }
     }
     
     formatDateTime(datetime) {
@@ -494,17 +531,18 @@ class PortfolioChatbot {
             
             const duration = this.getMeetingDurationMinutes(meetingType);
             
-            const response = await fetch('/.netlify/functions/calendar-booking', {
+            const response = await fetch('/.netlify/functions/meeting-manager', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     action: 'bookMeeting',
-                    datetime: slot.datetime.toISOString(),
-                    duration: duration,
-                    userName: userName,
+                    slotId: slotId,
                     userEmail: userEmail,
+                    userName: userName,
                     meetingType: meetingType,
-                    notes: notes
+                    notes: notes,
+                    datetime: slot.datetime.toISOString(),
+                    duration: duration
                 })
             });
             
@@ -512,21 +550,18 @@ class PortfolioChatbot {
                 const data = await response.json();
                 
                 const meeting = {
-                    id: data.eventId,
+                    id: data.meeting.id,
                     slotId,
                     datetime: slot.datetime,
                     userEmail,
                     userName,
                     type: meetingType || 'consultation',
                     notes,
-                    status: 'confirmed',
+                    status: data.meeting.status,
                     createdAt: new Date(),
-                    meetingLink: data.meetingLink
+                    meetingLink: data.meeting.meetingLink,
+                    calendarEventId: data.meeting.calendarEventId
                 };
-                
-                // Save locally as backup
-                this.bookedMeetings.push(meeting);
-                this.saveBookedMeetings();
                 
                 return meeting;
             } else {
@@ -641,7 +676,7 @@ Tien Dat's AI Assistant`;
             lowerMessage.includes('meeting') || lowerMessage.includes('appointment')) {
             
             if (lowerMessage.includes('cancel') || lowerMessage.includes('reschedule')) {
-                return this.handleMeetingManagement(message);
+                return await this.handleMeetingManagement(message);
             }
             
             return this.startBookingProcess();
@@ -757,7 +792,7 @@ Tien Dat's AI Assistant`;
         }
     }
     
-    handleMeetingManagement(message) {
+    async handleMeetingManagement(message) {
         const lowerMessage = message.toLowerCase();
         const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
         const email = message.match(emailRegex);
@@ -766,7 +801,7 @@ Tien Dat's AI Assistant`;
             return "To manage your meetings, please provide your email address. For example: 'Cancel my meeting, my email is john@example.com'";
         }
         
-        const userMeetings = this.getUserMeetings(email[0]);
+        const userMeetings = await this.getUserMeetings(email[0]);
         
         if (userMeetings.length === 0) {
             return "I don't find any upcoming meetings for that email address. Would you like to schedule a new meeting?";
