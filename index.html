@@ -63,9 +63,23 @@
 <section id="projects" class="content-section">
     <div class="container">
         <h2 class="section-title">Signature Projects</h2>
+        
+        <!-- Project Filter Controls -->
+        <div class="project-filters">
+            <input type="text" id="project-search" placeholder="Search projects..." class="project-search">
+            <div class="filter-tags">
+                <button class="filter-tag active" data-filter="all">All</button>
+                <button class="filter-tag" data-filter="n8n">n8n</button>
+                <button class="filter-tag" data-filter="python">Python</button>
+                <button class="filter-tag" data-filter="google-apps-script">Google Apps Script</button>
+                <button class="filter-tag" data-filter="langchain">LangChain</button>
+                <button class="filter-tag" data-filter="automation">Automation</button>
+            </div>
+        </div>
+        
         <div class="projects-showcase">
             <!-- Project 1 -->
-            <div class="project-entry">
+            <div class="project-entry" data-tags="n8n,langchain,automation" data-project="ai-email-agent">
                 <div class="project-thumbnail-container">
                     <!-- Option A: Text (styled by CSS) -->
                     <!-- <span>N8N</span> --> <!-- Comment out or remove if using image -->
@@ -76,7 +90,7 @@
                 </div>
                 <div class="project-content">
                     <h3>
-                        <a href="https://www.upwork.com/freelancers/~01d919364bdbf903ce?p=1916487322753646592" target="_blank" rel="noopener noreferrer">AI-Powered Email & Data Agent</a>
+                        <a href="#" class="project-modal-trigger" data-project="ai-email-agent">AI-Powered Email & Data Agent</a>
                     </h3>
                     <p>Developed an AI agent using n8n and LangChain for automated email classification, PDF data extraction (OCR), and Google Sheets integration. (Upwork)</p>
                     <p class="project-skills">Skills: n8n, LangChain, Google Sheets</p>
@@ -84,7 +98,7 @@
             </div>
             
             <!-- Project 2 -->
-            <div class="project-entry">
+            <div class="project-entry" data-tags="python,excel,automation" data-project="financial-modeling">
                 <div class="project-thumbnail-container">
                     <!-- <span>PY</span> --> <!-- Comment out or remove if using image -->
                     <div class="project-thumbnail">
@@ -93,7 +107,7 @@
                 </div>
                 <div class="project-content">
                     <h3>
-                        <a href="https://drive.google.com/drive/folders/1WBIQdZ7DdKcvxrTuklL-pbwSu9px-7T1?usp=sharing" target="_blank" rel="noopener noreferrer">Financial Modeling & Valuation</a>
+                        <a href="#" class="project-modal-trigger" data-project="financial-modeling">Financial Modeling & Valuation</a>
                     </h3>
                     <p>Led in-depth financial analysis, creating predictive models and sensitivity analyses with Python and Excel for market risk evaluation. (Drive)</p>
                     <p class="project-skills">Skills: Python, Excel</p>
@@ -101,7 +115,7 @@
             </div>
 
             <!-- Project 3 -->
-            <div class="project-entry">
+            <div class="project-entry" data-tags="google-apps-script,automation" data-project="data-extraction">
                 <div class="project-thumbnail-container">
                     <!-- <span>GAS</span> --> <!-- Comment out or remove if using image -->
                     <div class="project-thumbnail">
@@ -110,7 +124,7 @@
                 </div>
                 <div class="project-content">
                     <h3>
-                        <a href="https://github.com/Dondo0936/App-Script-Automation" target="_blank" rel="noopener noreferrer">Automated Data Extraction</a>
+                        <a href="#" class="project-modal-trigger" data-project="data-extraction">Automated Data Extraction</a>
                     </h3>
                     <p>Engineered Google Apps Scripts for automated data extraction from Google Drive, enhancing data accessibility and workflow efficiency. (GitHub)</p>
                     <p class="project-skills">Skills: Google Apps Script, Google Drive</p>
@@ -118,7 +132,7 @@
             </div>
 
             <!-- Project 4 -->
-            <div class="project-entry">
+            <div class="project-entry" data-tags="google-apps-script,automation" data-project="gmail-automation">
                 <div class="project-thumbnail-container">
                     <!-- <span>GAS</span> --> <!-- Comment out or remove if using image -->
                     <div class="project-thumbnail">
@@ -127,7 +141,7 @@
                 </div>
                 <div class="project-content">
                     <h3>
-                        <a href="https://github.com/Dondo0936/GmailAttachmentsSaving" target="_blank" rel="noopener noreferrer">Gmail Attachment Automation</a>
+                        <a href="#" class="project-modal-trigger" data-project="gmail-automation">Gmail Attachment Automation</a>
                     </h3>
                     <p>Streamlined Gmail attachment processing, automatically saving specified files to designated Google Drive folders using Google Apps Script. (GitHub)</p>
                     <p class="project-skills">Skills: Google Apps Script, Gmail, Google Drive</p>
@@ -169,13 +183,46 @@
             <div class="container">
                 <h2 class="section-title">Connect</h2>
                 <p>Interested in collaborating or learning more?</p>
-                <p>
-                    <a href="mailto:tiendat0936@gmail.com" class="contact-link">tiendat0936@gmail.com</a>
-                </p>
-                <p>
-                    <a href="https://www.linkedin.com/in/datdo02112000" target="_blank" class="contact-link">LinkedIn</a> |
-                    <a href="https://dondo0936.github.io/yourusername.github.io/" target="_blank" class="contact-link">GitHub</a>
-                </p>
+                
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="contact-name" name="name" placeholder="Your Name" required>
+                            <span class="form-validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="contact-email" name="email" placeholder="Your Email" required>
+                            <span class="form-validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <select id="contact-purpose" name="purpose" required>
+                                <option value="">Select Purpose</option>
+                                <option value="collaboration">Collaboration Opportunity</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="job-opportunity">Job Opportunity</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="form-validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="contact-message" name="message" placeholder="Your Message" rows="4" required></textarea>
+                            <span class="form-validation"></span>
+                        </div>
+                        <button type="submit" class="btn-submit">Send Message</button>
+                        <button type="button" id="schedule-meeting" class="btn-secondary">Schedule Meeting</button>
+                    </form>
+                </div>
+                
+                <div class="contact-links">
+                    <p>
+                        <a href="mailto:tiendat0936@gmail.com" class="contact-link">tiendat0936@gmail.com</a>
+                    </p>
+                    <p>
+                        <a href="https://www.linkedin.com/in/datdo02112000" target="_blank" class="contact-link">LinkedIn</a> |
+                        <a href="https://dondo0936.github.io/yourusername.github.io/" target="_blank" class="contact-link">GitHub</a>
+                    </p>
+                </div>
             </div>
         </section>
     </main>
@@ -185,6 +232,66 @@
             <p>&copy; 2024 Tien Dat Do. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Project Modals -->
+    <div id="project-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendar-modal" class="modal-overlay">
+        <div class="modal-content calendar-modal">
+            <button class="modal-close">&times;</button>
+            <div class="calendar-container">
+                <h3>Schedule a Meeting with Tien Dat</h3>
+                <p>Select your preferred option to schedule a meeting:</p>
+                
+                <div class="calendar-options">
+                    <div class="calendar-option">
+                        <h4>📅 Google Calendar</h4>
+                        <p>Create a meeting invite directly in Google Calendar</p>
+                        <button class="calendar-btn" id="google-calendar-btn">
+                            Schedule via Google Calendar
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-option">
+                        <h4>📧 Email Request</h4>
+                        <p>Send an email to request a meeting time</p>
+                        <button class="calendar-btn" id="email-meeting-btn">
+                            Request via Email
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-option">
+                        <h4>📋 Meeting Details</h4>
+                        <div class="meeting-form">
+                            <input type="email" id="meeting-email" placeholder="Your email address" required>
+                            <select id="meeting-type">
+                                <option value="">Select meeting type</option>
+                                <option value="consultation">Consultation (30 min)</option>
+                                <option value="project-discussion">Project Discussion (45 min)</option>
+                                <option value="collaboration">Collaboration Meeting (60 min)</option>
+                            </select>
+                            <textarea id="meeting-notes" placeholder="Brief description of what you'd like to discuss..." rows="3"></textarea>
+                            <button class="calendar-btn" id="submit-meeting-request">
+                                Send Meeting Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="availability-info">
+                    <h4>⏰ Available Times</h4>
+                    <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM (GMT+7)</p>
+                    <p><strong>Response Time:</strong> Within 24 hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Claude AI Chatbot -->
     <div id="chatbot-toggle" class="chatbot-toggle">
@@ -198,11 +305,25 @@
             <h3>Chat with Don</h3>
             <button id="chatbot-close" class="chatbot-close">×</button>
         </div>
+        
+        <!-- Quick Actions -->
+        <div id="quick-actions" class="quick-actions">
+            <button class="quick-action-btn" data-message="What is Tien Dat's professional background?">Background</button>
+            <button class="quick-action-btn" data-message="Tell me about his automation projects">Projects</button>
+            <button class="quick-action-btn" data-message="What are his key skills?">Skills</button>
+            <button class="quick-action-btn" data-message="Can you help me schedule a meeting?">📅 Schedule</button>
+            <button class="quick-action-btn" data-message="How can I contact him?">Contact</button>
+        </div>
+        
         <div id="chatbot-messages" class="chatbot-messages">
             <div class="message bot-message">
                 <div class="message-content">Hi! I'm Don, Dat Do's AI assistant. I can help answer questions about his experience, skills, and projects. How can I assist you today?</div>
             </div>
         </div>
+        
+        <!-- Suggested Questions -->
+        <div id="suggested-questions" class="suggested-questions"></div>
+        
         <div class="chatbot-input-container">
             <input type="text" id="chatbot-input" placeholder="Ask me about Tien Dat's experience..." maxlength="500">
             <button id="chatbot-send">Send</button>

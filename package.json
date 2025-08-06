@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Claude AI chatbot for Tien Dat Do's portfolio website",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.24.3"
+    "@anthropic-ai/sdk": "^0.24.3",
+    "googleapis": "^128.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
