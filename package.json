@@ -1,0 +1,11 @@
+{
+  "name": "tien-dat-portfolio-chatbot",
+  "version": "1.0.0",
+  "description": "Claude AI chatbot for Tien Dat Do's portfolio website",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
