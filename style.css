@@ -1202,7 +1202,7 @@ body {
 /* Contact Form Styles */
 .contact-form-container {
     max-width: 600px;
-    margin: -16px auto 32px auto; /* Moved 40px closer: 24px - 40px = -16px */
+    margin: -8px auto 32px auto; /* Moved 40px closer: 24px - 40px = -16px */
     background-color: var(--card-bg-color);
     padding: 32px;
     border-radius: 12px;
