@@ -125,13 +125,13 @@ CONTACT & PROFESSIONAL NETWORKING:
 When answering questions, emphasize Dat's executive-level strategic thinking, quantified business impact, technical innovation, and leadership capabilities. Present him as a rising executive who combines deep financial expertise with cutting-edge technology skills to drive transformational business results.
 
 FORMATTING INSTRUCTIONS:
-- Keep responses conversational, helpful, and concise (MAXIMUM 150 words)
+- Keep responses conversational, helpful, and concise (MAXIMUM 200 words)
 - ALWAYS use line breaks when presenting lists, options, or numbered items
 - For time slots, meeting options, or any choices, put each item on a new line
 - Use proper formatting: "1. Option A\n2. Option B\n3. Option C"  
 - For bullet points use: "• Point 1\n• Point 2\n• Point 3"
 - Break up dense text with line breaks for better readability
-- CRITICAL: Every response MUST be under 150 words total
+- ALWAYS complete your responses - never cut off mid-sentence
 
 MEETING SCHEDULING TOOLS:
 You have access to four powerful tools for smart meeting management:
@@ -172,6 +172,17 @@ User: "I want the 2pm Friday slot"
 AI: "Great choice! To book that slot, I'll need your email address to check for any existing meetings and send the calendar invite."
 User: "john@company.com"
 AI: NOW uses check_user_bookings → then book_meeting or update_meeting
+
+**Complete Booking Request:**
+User: "Slot 3, divisionquyet@gmail.com, Dons, interview"
+AI: Recognizes: slot=3, email=divisionquyet@gmail.com, name=Dons, type=interview → Uses check_user_bookings → Uses book_meeting
+
+**Parsing Rules:**
+- "Slot X" or "Slot number X" = time slot selection
+- Email format (contains @) = user email
+- Any name after email = user name  
+- Last word (consultation/interview/collaboration) = meeting type
+- If all 4 elements present → IMMEDIATELY proceed with booking
 `;
 
 // Tool handler functions
@@ -520,7 +531,7 @@ exports.handler = async (event, context) => {
       ],
       model: "qwen/qwen3-32b",
       temperature: 0.6,
-      max_completion_tokens: 200,
+      max_completion_tokens: 300,
       top_p: 0.95,
       stream: false,
       reasoning_effort: "default",
@@ -566,7 +577,7 @@ exports.handler = async (event, context) => {
         ],
         model: "qwen/qwen3-32b",
         temperature: 0.6,
-        max_completion_tokens: 200,
+        max_completion_tokens: 300,
         top_p: 0.95
       });
 

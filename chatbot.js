@@ -370,7 +370,7 @@ class PortfolioChatbot {
         
         // Save to database
         try {
-            await fetch('/.netlify/functions/meeting-manager', {
+            await fetch('/.netlify/functions/meeting-manager-simple', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -435,7 +435,7 @@ class PortfolioChatbot {
             const now = new Date();
             const endDate = new Date(now.getTime() + (14 * 24 * 60 * 60 * 1000)); // 14 days from now
             
-            const response = await fetch('/.netlify/functions/meeting-manager', {
+            const response = await fetch('/.netlify/functions/meeting-manager-simple', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -495,7 +495,7 @@ class PortfolioChatbot {
     
     async getUserMeetings(email) {
         try {
-            const response = await fetch('/.netlify/functions/meeting-manager', {
+            const response = await fetch('/.netlify/functions/meeting-manager-simple', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -550,7 +550,7 @@ class PortfolioChatbot {
             
             const duration = this.getMeetingDurationMinutes(meetingType);
             
-            const response = await fetch('/.netlify/functions/meeting-manager', {
+            const response = await fetch('/.netlify/functions/meeting-manager-simple', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
