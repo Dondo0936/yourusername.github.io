@@ -226,8 +226,8 @@ class PortfolioChatbot {
                 return;
             }
             
-            // Send message to Claude API for other queries
-            const response = await fetch('/.netlify/functions/claude-chat', {
+            // Send message to Groq API via Netlify function
+            const response = await fetch('/.netlify/functions/groq-chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
