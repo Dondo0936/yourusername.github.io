@@ -810,8 +810,8 @@ body {
     position: fixed;
     bottom: 100px;
     right: 30px;
-    width: 385px;
-    height: 500px;
+    width: 462px; /* 20% wider: 385px * 1.2 = 462px */
+    height: 550px; /* 10% taller: 500px * 1.1 = 550px */
     background-color: var(--card-bg-color);
     border: 1px solid var(--card-border-color);
     border-radius: 12px;
@@ -1540,7 +1540,7 @@ body {
 @media (max-width: 768px) {
     .chatbot-container {
         width: calc(100vw - 40px);
-        height: 70vh;
+        height: 75vh; /* Slightly taller on mobile too */
         bottom: 20px;
         right: 20px;
         left: 20px;

@@ -124,8 +124,227 @@ CONTACT & PROFESSIONAL NETWORKING:
 
 When answering questions, emphasize Dat's executive-level strategic thinking, quantified business impact, technical innovation, and leadership capabilities. Present him as a rising executive who combines deep financial expertise with cutting-edge technology skills to drive transformational business results.
 
-Keep responses conversational, helpful, and concise (under 300 words). If asked about scheduling meetings, guide them to use the contact form or meeting scheduler.
+FORMATTING INSTRUCTIONS:
+- Keep responses conversational, helpful, and concise (under 300 words)
+- ALWAYS use line breaks when presenting lists, options, or numbered items
+- For time slots, meeting options, or any choices, put each item on a new line
+- Use proper formatting: "1. Option A\n2. Option B\n3. Option C"
+- For bullet points use: "• Point 1\n• Point 2\n• Point 3"
+- Break up dense text with line breaks for better readability
+
+MEETING SCHEDULING TOOLS:
+You have access to four powerful tools for smart meeting management:
+
+1. check_available_slots: Use this when someone asks about available meeting times
+2. check_user_bookings: Use this to check if user has existing meetings (by email)
+3. update_meeting: Use this to reschedule an existing meeting instead of creating new one
+4. book_meeting: Use this only for creating new meetings
+
+SMART BOOKING WORKFLOW:
+🚨 **CRITICAL RULE: NEVER use any booking tools without a valid email address first!**
+
+1. **EMAIL FIRST**: If user asks about scheduling but no email provided, ask for email before doing ANYTHING
+2. **Then check history**: Once you have email, use check_user_bookings to check existing meetings
+3. **Show slots only after email**: Only use check_available_slots after you have their email
+4. **Booking/updating**: Only use book_meeting or update_meeting after email + slot confirmation
+
+MANDATORY EMAIL VALIDATION:
+- If user says "schedule meeting" but no email → Ask for email first
+- If user says "change my meeting" but no email → Ask for email first  
+- If user picks a time slot but no email → Ask for email before booking
+- NO EXCEPTIONS: Always get email before any booking action
+
+EXAMPLE CONVERSATIONS:
+
+**No Email Provided:**
+User: "Can I schedule a meeting?"
+AI: "I'd be happy to help schedule a meeting! To check your existing bookings and show available slots, I'll need your email address first."
+User: "It's john@company.com"
+AI: NOW uses check_user_bookings → then check_available_slots → then booking tools
+
+**Email Provided Upfront:**
+User: "Can I schedule a meeting? My email is john@company.com"  
+AI: Uses check_user_bookings → no existing meetings → Uses check_available_slots → Uses book_meeting
+
+**Time Slot Picked But No Email:**
+User: "I want the 2pm Friday slot"
+AI: "Great choice! To book that slot, I'll need your email address to check for any existing meetings and send the calendar invite."
+User: "john@company.com"
+AI: NOW uses check_user_bookings → then book_meeting or update_meeting
 `;
+
+// Tool handler functions
+async function handleCheckAvailableSlots(args) {
+  // Generate available slots for the next 14 days
+  // Note: user_email is required for context tracking
+  const slots = [];
+  const now = new Date();
+  
+  for (let i = 1; i <= 14; i++) {
+    const date = new Date(now);
+    date.setDate(now.getDate() + i);
+    
+    // Skip weekends
+    if (date.getDay() === 0 || date.getDay() === 6) continue;
+    
+    // Add morning and afternoon slots
+    const morningSlot = new Date(date);
+    morningSlot.setHours(9, 0, 0, 0);
+    
+    const afternoonSlot = new Date(date);
+    afternoonSlot.setHours(14, 0, 0, 0);
+    
+    slots.push({
+      datetime: morningSlot.toISOString(),
+      display: morningSlot.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    });
+    
+    slots.push({
+      datetime: afternoonSlot.toISOString(),
+      display: afternoonSlot.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    });
+  }
+  
+  return {
+    success: true,
+    slots: slots.slice(0, 10), // Return first 10 slots
+    message: "Available time slots retrieved"
+  };
+}
+
+async function handleCheckUserBookings(args) {
+  try {
+    const response = await fetch(`${process.env.URL || 'http://localhost:8888'}/.netlify/functions/meeting-manager`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'getUserMeetings',
+        userEmail: args.user_email
+      })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return {
+        success: true,
+        existingMeetings: result.meetings || [],
+        hasExistingBooking: result.meetings && result.meetings.length > 0,
+        message: result.meetings && result.meetings.length > 0 
+          ? `Found ${result.meetings.length} existing meeting(s)` 
+          : "No existing meetings found"
+      };
+    } else {
+      return {
+        success: false,
+        existingMeetings: [],
+        hasExistingBooking: false,
+        message: "Could not check existing bookings"
+      };
+    }
+  } catch (error) {
+    console.error('Error checking user bookings:', error);
+    return {
+      success: false,
+      existingMeetings: [],
+      hasExistingBooking: false,
+      message: "Could not check existing bookings"
+    };
+  }
+}
+
+async function handleUpdateMeeting(args) {
+  try {
+    const response = await fetch(`${process.env.URL || 'http://localhost:8888'}/.netlify/functions/meeting-manager`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'updateMeeting',
+        meetingId: args.meeting_id,
+        newDatetime: args.new_datetime,
+        notes: args.notes || ''
+      })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return {
+        success: true,
+        meetingId: args.meeting_id,
+        message: "Meeting successfully rescheduled! Updated calendar invite sent.",
+        newDatetime: args.new_datetime
+      };
+    } else {
+      throw new Error('Failed to update meeting');
+    }
+  } catch (error) {
+    console.error('Error updating meeting:', error);
+    return {
+      success: false,
+      message: "Sorry, I couldn't reschedule the meeting automatically. Please contact us directly.",
+      error: error.message
+    };
+  }
+}
+
+async function handleBookMeeting(args) {
+  try {
+    // Here you would integrate with your existing meeting-manager function
+    const response = await fetch(`${process.env.URL || 'http://localhost:8888'}/.netlify/functions/meeting-manager`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'bookMeeting',
+        meetingData: {
+          datetime: args.datetime,
+          userEmail: args.user_email,
+          userName: args.user_name,
+          meetingType: args.meeting_type,
+          notes: args.notes || '',
+          duration: 30,
+          sessionId: 'ai-booking-' + Date.now()
+        }
+      })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return {
+        success: true,
+        meetingId: result.meetingId,
+        message: "Meeting booked successfully! You'll receive a calendar invite shortly.",
+        details: {
+          datetime: args.datetime,
+          userEmail: args.user_email,
+          userName: args.user_name,
+          meetingType: args.meeting_type
+        }
+      };
+    } else {
+      throw new Error('Failed to book meeting');
+    }
+  } catch (error) {
+    console.error('Error booking meeting:', error);
+    return {
+      success: false,
+      message: "Sorry, I couldn't book the meeting automatically. Please use the contact form to schedule manually.",
+      error: error.message
+    };
+  }
+}
 
 exports.handler = async (event, context) => {
   // Handle CORS preflight requests
@@ -185,7 +404,108 @@ exports.handler = async (event, context) => {
       apiKey: process.env.GROQ_API_KEY
     });
 
-    // Call Groq API with Qwen 3
+    // Define tools for meeting booking
+    const tools = [
+      {
+        type: "function",
+        function: {
+          name: "check_available_slots",
+          description: "Get available time slots for scheduling meetings - ONLY use after getting user's email",
+          parameters: {
+            type: "object",
+            properties: {
+              user_email: {
+                type: "string",
+                description: "User's email address (required for context tracking)"
+              },
+              date_range: {
+                type: "string",
+                description: "Date range to check (e.g., 'next_week', 'this_month')"
+              }
+            },
+            required: ["user_email"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "check_user_bookings",
+          description: "Check if user has existing meetings and get their booking history",
+          parameters: {
+            type: "object",
+            properties: {
+              user_email: {
+                type: "string",
+                description: "User's email address to check for existing bookings"
+              }
+            },
+            required: ["user_email"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "update_meeting",
+          description: "Update/reschedule an existing meeting instead of creating a new one",
+          parameters: {
+            type: "object",
+            properties: {
+              meeting_id: {
+                type: "string",
+                description: "ID of the existing meeting to update"
+              },
+              new_datetime: {
+                type: "string",
+                description: "New meeting date and time in ISO format"
+              },
+              notes: {
+                type: "string",
+                description: "Updated meeting notes"
+              }
+            },
+            required: ["meeting_id", "new_datetime"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "book_meeting",
+          description: "Book a meeting at a specific time slot",
+          parameters: {
+            type: "object",
+            properties: {
+              datetime: {
+                type: "string",
+                description: "Meeting date and time in ISO format"
+              },
+              user_email: {
+                type: "string",
+                description: "User's email address"
+              },
+              user_name: {
+                type: "string",
+                description: "User's name"
+              },
+              meeting_type: {
+                type: "string",
+                enum: ["consultation", "collaboration", "job-opportunity", "other"],
+                description: "Type of meeting"
+              },
+              notes: {
+                type: "string",
+                description: "Additional meeting notes or agenda"
+              }
+            },
+            required: ["datetime", "user_email", "user_name", "meeting_type"]
+          }
+        }
+      }
+    ];
+
+    // Call Groq API with Qwen 3 and function calling
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
@@ -202,8 +522,64 @@ exports.handler = async (event, context) => {
       max_completion_tokens: 300,
       top_p: 0.95,
       stream: false,
-      reasoning_effort: "default"
+      reasoning_effort: "default",
+      tools: tools,
+      tool_choice: "auto"
     });
+
+    // Handle function calls
+    if (chatCompletion.choices[0].message.tool_calls) {
+      const toolCall = chatCompletion.choices[0].message.tool_calls[0];
+      const functionName = toolCall.function.name;
+      const functionArgs = JSON.parse(toolCall.function.arguments);
+
+      let functionResult;
+      
+      if (functionName === "check_available_slots") {
+        functionResult = await handleCheckAvailableSlots(functionArgs);
+      } else if (functionName === "check_user_bookings") {
+        functionResult = await handleCheckUserBookings(functionArgs);
+      } else if (functionName === "update_meeting") {
+        functionResult = await handleUpdateMeeting(functionArgs);
+      } else if (functionName === "book_meeting") {
+        functionResult = await handleBookMeeting(functionArgs);
+      }
+
+      // Get final response with function result
+      const followUpCompletion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: PORTFOLIO_CONTEXT
+          },
+          {
+            role: "user",
+            content: message
+          },
+          chatCompletion.choices[0].message,
+          {
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: JSON.stringify(functionResult)
+          }
+        ],
+        model: "qwen/qwen3-32b",
+        temperature: 0.6,
+        max_completion_tokens: 300,
+        top_p: 0.95
+      });
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          response: followUpCompletion.choices[0].message.content
+        })
+      };
+    }
 
     return {
       statusCode: 200,
