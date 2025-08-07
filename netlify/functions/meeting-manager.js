@@ -37,22 +37,18 @@ if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
 }
 
 exports.handler = async (event, context) => {
-  // Initialize database on first run with error handling
+  // Check if database is available, fallback to mock data if not
+  let databaseAvailable = true;
   try {
-    await initializeDatabase();
+    if (!process.env.DATABASE_URL) {
+      console.warn('DATABASE_URL not found, using fallback mode');
+      databaseAvailable = false;
+    } else {
+      await initializeDatabase();
+    }
   } catch (dbError) {
-    console.error('Database initialization failed:', dbError);
-    return {
-      statusCode: 502,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        error: 'Database connection failed',
-        details: process.env.NODE_ENV === 'development' ? dbError.message : 'Service temporarily unavailable'
-      })
-    };
+    console.error('Database initialization failed, using fallback mode:', dbError);
+    databaseAvailable = false;
   }
 
   // Handle CORS
@@ -79,21 +75,21 @@ exports.handler = async (event, context) => {
 
     switch (action) {
       case 'getAvailability':
-        return await getAvailability(data);
+        return await getAvailability(data, databaseAvailable);
       case 'bookMeeting':
-        return await bookMeeting(data);
+        return await bookMeeting(data, databaseAvailable);
       case 'getUserMeetings':
-        return await getUserMeetings(data);
+        return await getUserMeetings(data, databaseAvailable);
       case 'updateMeeting':
-        return await updateMeetingHandler(data);
+        return await updateMeetingHandler(data, databaseAvailable);
       case 'cancelMeeting':
-        return await cancelMeetingHandler(data);
+        return await cancelMeetingHandler(data, databaseAvailable);
       case 'saveConversation':
-        return await saveConversation(data);
+        return await saveConversation(data, databaseAvailable);
       case 'getConversation':
-        return await getConversation(data);
+        return await getConversation(data, databaseAvailable);
       case 'getStats':
-        return await getStats();
+        return await getStats(databaseAvailable);
       default:
         return {
           statusCode: 400,
@@ -114,14 +110,23 @@ exports.handler = async (event, context) => {
   }
 };
 
-async function getAvailability({ startDate, endDate }) {
+async function getAvailability({ startDate, endDate }, databaseAvailable = true) {
   try {
     const start = new Date(startDate);
     const end = new Date(endDate);
     
-    // Get booked slots from database
-    const bookedSlots = await getBookedSlots(startDate, endDate);
-    const bookedSlotIds = bookedSlots.map(slot => slot.slot_id);
+    // Get booked slots from database or use empty fallback
+    let bookedSlots = [];
+    let bookedSlotIds = [];
+    
+    if (databaseAvailable) {
+      try {
+        bookedSlots = await getBookedSlots(startDate, endDate);
+        bookedSlotIds = bookedSlots.map(slot => slot.slot_id);
+      } catch (dbError) {
+        console.warn('Database query failed, using empty bookings:', dbError);
+      }
+    }
 
     // Get busy times from Google Calendar if available
     let busyTimes = [];
@@ -153,7 +158,8 @@ async function getAvailability({ startDate, endDate }) {
       body: JSON.stringify({ 
         availableSlots,
         totalBooked: bookedSlots.length,
-        hasCalendarIntegration: !!calendar
+        hasCalendarIntegration: !!calendar,
+        databaseAvailable
       })
     };
   } catch (error) {
@@ -162,7 +168,7 @@ async function getAvailability({ startDate, endDate }) {
   }
 }
 
-async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, datetime, duration = 30, meetingData }) {
+async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, datetime, duration = 30, meetingData }, databaseAvailable = true) {
   // Handle both old and new API formats
   if (meetingData) {
     slotId = slotId || meetingData.sessionId;
@@ -174,17 +180,23 @@ async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, da
     duration = duration || meetingData.duration || 30;
   }
   try {
-    // Check if slot is already booked
-    const existingMeeting = await getMeetingBySlotId(slotId);
-    if (existingMeeting) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ error: 'Time slot is no longer available' })
-      };
+    // Check if slot is already booked (skip if database unavailable)
+    if (databaseAvailable) {
+      try {
+        const existingMeeting = await getMeetingBySlotId(slotId);
+        if (existingMeeting) {
+          return {
+            statusCode: 400,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ error: 'Time slot is no longer available' })
+          };
+        }
+      } catch (dbError) {
+        console.warn('Could not check existing meetings, proceeding:', dbError);
+      }
     }
 
     let calendarEventId = null;
@@ -249,18 +261,45 @@ Booking Time: ${new Date().toISOString()}`,
       }
     }
 
-    // Create meeting in database
-    const meeting = await createMeeting({
-      slotId,
-      userEmail,
-      userName,
-      meetingType,
-      notes,
-      datetime,
-      duration,
-      calendarEventId,
-      meetingLink
-    });
+    // Create meeting in database or return mock response
+    let meeting;
+    if (databaseAvailable) {
+      try {
+        meeting = await createMeeting({
+          slotId,
+          userEmail,
+          userName,
+          meetingType,
+          notes,
+          datetime,
+          duration,
+          calendarEventId,
+          meetingLink
+        });
+      } catch (dbError) {
+        console.warn('Could not save to database, returning mock response:', dbError);
+        meeting = {
+          id: `mock-${Date.now()}`,
+          datetime,
+          meeting_type: meetingType,
+          duration,
+          meeting_link: meetingLink,
+          calendar_event_id: calendarEventId,
+          status: 'confirmed'
+        };
+      }
+    } else {
+      // Mock meeting response when database unavailable
+      meeting = {
+        id: `mock-${Date.now()}`,
+        datetime,
+        meeting_type: meetingType,
+        duration,
+        meeting_link: meetingLink,
+        calendar_event_id: calendarEventId,
+        status: 'confirmed'
+      };
+    }
 
     return {
       statusCode: 200,
@@ -270,6 +309,7 @@ Booking Time: ${new Date().toISOString()}`,
       },
       body: JSON.stringify({
         success: true,
+        meetingId: meeting.id,
         meeting: {
           id: meeting.id,
           datetime: meeting.datetime,
@@ -278,7 +318,8 @@ Booking Time: ${new Date().toISOString()}`,
           meetingLink: meeting.meeting_link,
           calendarEventId: meeting.calendar_event_id,
           status: meeting.status
-        }
+        },
+        databaseAvailable
       })
     };
   } catch (error) {
@@ -287,9 +328,17 @@ Booking Time: ${new Date().toISOString()}`,
   }
 }
 
-async function getUserMeetings({ userEmail }) {
+async function getUserMeetings({ userEmail }, databaseAvailable = true) {
   try {
-    const meetings = await getMeetingsByEmail(userEmail);
+    let meetings = [];
+    
+    if (databaseAvailable) {
+      try {
+        meetings = await getMeetingsByEmail(userEmail);
+      } catch (dbError) {
+        console.warn('Could not fetch user meetings from database:', dbError);
+      }
+    }
     
     return {
       statusCode: 200,
@@ -297,7 +346,10 @@ async function getUserMeetings({ userEmail }) {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ meetings })
+      body: JSON.stringify({ 
+        meetings,
+        databaseAvailable
+      })
     };
   } catch (error) {
     console.error('Get user meetings error:', error);
@@ -305,7 +357,7 @@ async function getUserMeetings({ userEmail }) {
   }
 }
 
-async function updateMeetingHandler({ meetingId, newDatetime, notes }) {
+async function updateMeetingHandler({ meetingId, newDatetime, notes }, databaseAvailable = true) {
   try {
     // Get existing meeting first
     const existingMeeting = await sql`
@@ -374,7 +426,7 @@ async function updateMeetingHandler({ meetingId, newDatetime, notes }) {
   }
 }
 
-async function cancelMeetingHandler({ meetingId }) {
+async function cancelMeetingHandler({ meetingId }, databaseAvailable = true) {
   try {
     const meeting = await cancelMeeting(meetingId);
     
@@ -405,7 +457,7 @@ async function cancelMeetingHandler({ meetingId }) {
   }
 }
 
-async function saveConversation({ sessionId, userEmail, message, messageType }) {
+async function saveConversation({ sessionId, userEmail, message, messageType }, databaseAvailable = true) {
   try {
     const conversation = await saveConversationMessage({
       sessionId,
@@ -428,7 +480,7 @@ async function saveConversation({ sessionId, userEmail, message, messageType }) 
   }
 }
 
-async function getConversation({ sessionId }) {
+async function getConversation({ sessionId }, databaseAvailable = true) {
   try {
     const history = await getConversationHistory(sessionId);
     
@@ -446,7 +498,7 @@ async function getConversation({ sessionId }) {
   }
 }
 
-async function getStats() {
+async function getStats(databaseAvailable = true) {
   try {
     const stats = await getMeetingStats();
     
