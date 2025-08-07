@@ -1,4 +1,5 @@
 const {
+  sql,
   initializeDatabase,
   createMeeting,
   getMeetingBySlotId,
@@ -36,8 +37,23 @@ if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
 }
 
 exports.handler = async (event, context) => {
-  // Initialize database on first run
-  await initializeDatabase();
+  // Initialize database on first run with error handling
+  try {
+    await initializeDatabase();
+  } catch (dbError) {
+    console.error('Database initialization failed:', dbError);
+    return {
+      statusCode: 502,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        error: 'Database connection failed',
+        details: process.env.NODE_ENV === 'development' ? dbError.message : 'Service temporarily unavailable'
+      })
+    };
+  }
 
   // Handle CORS
   const headers = {
@@ -68,6 +84,8 @@ exports.handler = async (event, context) => {
         return await bookMeeting(data);
       case 'getUserMeetings':
         return await getUserMeetings(data);
+      case 'updateMeeting':
+        return await updateMeetingHandler(data);
       case 'cancelMeeting':
         return await cancelMeetingHandler(data);
       case 'saveConversation':
@@ -144,7 +162,17 @@ async function getAvailability({ startDate, endDate }) {
   }
 }
 
-async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, datetime, duration }) {
+async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, datetime, duration = 30, meetingData }) {
+  // Handle both old and new API formats
+  if (meetingData) {
+    slotId = slotId || meetingData.sessionId;
+    userEmail = userEmail || meetingData.userEmail;
+    userName = userName || meetingData.userName;
+    meetingType = meetingType || meetingData.meetingType;
+    notes = notes || meetingData.notes;
+    datetime = datetime || meetingData.datetime;
+    duration = duration || meetingData.duration || 30;
+  }
   try {
     // Check if slot is already booked
     const existingMeeting = await getMeetingBySlotId(slotId);
@@ -274,6 +302,75 @@ async function getUserMeetings({ userEmail }) {
   } catch (error) {
     console.error('Get user meetings error:', error);
     throw new Error(`Failed to get user meetings: ${error.message}`);
+  }
+}
+
+async function updateMeetingHandler({ meetingId, newDatetime, notes }) {
+  try {
+    // Get existing meeting first
+    const existingMeeting = await sql`
+      SELECT * FROM meetings WHERE id = ${meetingId} AND status = 'confirmed'
+    `.then(result => result[0]);
+    
+    if (!existingMeeting) {
+      return {
+        statusCode: 404,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ error: 'Meeting not found' })
+      };
+    }
+
+    // Update in database
+    const updates = { datetime: newDatetime };
+    if (notes) updates.notes = notes;
+    
+    const updatedMeeting = await updateMeeting(meetingId, updates);
+    
+    // Update Google Calendar event if it exists
+    if (existingMeeting.calendar_event_id && calendar && process.env.GOOGLE_CALENDAR_ID) {
+      try {
+        const startTime = new Date(newDatetime);
+        const endTime = new Date(startTime.getTime() + (existingMeeting.duration * 60 * 1000));
+
+        await calendar.events.patch({
+          calendarId: process.env.GOOGLE_CALENDAR_ID,
+          eventId: existingMeeting.calendar_event_id,
+          requestBody: {
+            start: {
+              dateTime: startTime.toISOString(),
+              timeZone: 'Asia/Ho_Chi_Minh'
+            },
+            end: {
+              dateTime: endTime.toISOString(),
+              timeZone: 'Asia/Ho_Chi_Minh'
+            },
+            description: notes ? existingMeeting.description + `\nUpdated Notes: ${notes}` : existingMeeting.description
+          },
+          sendUpdates: 'all'
+        });
+      } catch (calendarError) {
+        console.warn('Calendar update failed:', calendarError.message);
+      }
+    }
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        success: true, 
+        meeting: updatedMeeting,
+        meetingId: meetingId
+      })
+    };
+  } catch (error) {
+    console.error('Update meeting error:', error);
+    throw new Error(`Failed to update meeting: ${error.message}`);
   }
 }
 

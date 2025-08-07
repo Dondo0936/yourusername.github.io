@@ -125,12 +125,13 @@ CONTACT & PROFESSIONAL NETWORKING:
 When answering questions, emphasize Dat's executive-level strategic thinking, quantified business impact, technical innovation, and leadership capabilities. Present him as a rising executive who combines deep financial expertise with cutting-edge technology skills to drive transformational business results.
 
 FORMATTING INSTRUCTIONS:
-- Keep responses conversational, helpful, and concise (under 200 words)
+- Keep responses conversational, helpful, and concise (MAXIMUM 150 words)
 - ALWAYS use line breaks when presenting lists, options, or numbered items
 - For time slots, meeting options, or any choices, put each item on a new line
-- Use proper formatting: "1. Option A\n2. Option B\n3. Option C"
+- Use proper formatting: "1. Option A\n2. Option B\n3. Option C"  
 - For bullet points use: "• Point 1\n• Point 2\n• Point 3"
 - Break up dense text with line breaks for better readability
+- CRITICAL: Every response MUST be under 150 words total
 
 MEETING SCHEDULING TOOLS:
 You have access to four powerful tools for smart meeting management:
@@ -519,7 +520,7 @@ exports.handler = async (event, context) => {
       ],
       model: "qwen/qwen3-32b",
       temperature: 0.6,
-      max_completion_tokens: 300,
+      max_completion_tokens: 200,
       top_p: 0.95,
       stream: false,
       reasoning_effort: "default",
@@ -565,7 +566,7 @@ exports.handler = async (event, context) => {
         ],
         model: "qwen/qwen3-32b",
         temperature: 0.6,
-        max_completion_tokens: 300,
+        max_completion_tokens: 200,
         top_p: 0.95
       });
 

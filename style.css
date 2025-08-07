@@ -1465,11 +1465,11 @@ body {
 .suggested-questions {
     padding: 10px 20px;
     border-top: 1px solid var(--border-color);
-    display: none;
+    display: none !important;
 }
 
 .suggested-questions.show {
-    display: block;
+    display: none !important;
 }
 
 .suggestion-bubble {
