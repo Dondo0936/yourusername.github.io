@@ -227,13 +227,17 @@ class PortfolioChatbot {
             }
             
             // Send message to Groq API via Netlify function
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
             const response = await fetch('/.netlify/functions/groq-chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ message }),
+                signal: controller.signal
             });
+            clearTimeout(timeoutId);
             
             if (!response.ok) {
                 const errorData = await response.json();
@@ -252,10 +256,13 @@ class PortfolioChatbot {
             
         } catch (error) {
             console.error('Error:', error);
+            clearTimeout(timeoutId);
             this.removeTypingIndicator(typingIndicator);
             
             let errorMessage = 'Sorry, I encountered an error. Please try again later.';
-            if (error.message.includes('too many requests')) {
+            if (error.name === 'AbortError') {
+                errorMessage = 'Request timed out – please try again.';
+            } else if (error.message.includes('too many requests')) {
                 errorMessage = 'I\'m receiving too many requests right now. Please try again in a moment.';
             } else if (error.message.includes('Message too long')) {
                 errorMessage = error.message;
@@ -263,6 +270,7 @@ class PortfolioChatbot {
             
             this.addMessage(errorMessage, 'bot');
         } finally {
+            this.removeTypingIndicator(typingIndicator);
             this.setLoading(false);
         }
     }
