@@ -177,8 +177,8 @@ User: "john@company.com"
 AI: NOW uses check_user_bookings → then book_meeting or update_meeting
 
 **Complete Booking Request:**
-User: "Slot 3, divisionquyet@gmail.com, Dons, interview"
-AI: Recognizes: slot=3, email=divisionquyet@gmail.com, name=Dons, type=interview → Uses check_user_bookings → Uses book_meeting
+User: "Slot 3, user@example.com, Dons, interview"
+AI: Recognizes: slot=3, email=user@example.com, name=Dons, type=interview → Uses check_user_bookings → Uses book_meeting
 
 **Parsing Rules:**
 - "Slot X" or "Slot number X" = time slot selection
