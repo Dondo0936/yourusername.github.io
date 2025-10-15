@@ -1018,6 +1018,9 @@ class ContactForm {
         this.form = document.getElementById('contact-form');
         this.scheduleBtn = document.getElementById('schedule-meeting');
         this.calendarModal = document.getElementById('calendar-modal');
+        this.statusElement = document.getElementById('contact-form-status');
+        this.submitButton = this.form ? this.form.querySelector('.btn-submit') : null;
+        this.submitButtonLabel = this.submitButton ? this.submitButton.textContent : '';
         
         if (this.form) {
             this.initEventListeners();
@@ -1086,14 +1089,72 @@ class ContactForm {
             }
         });
         
-        if (isFormValid) {
-            // Here you would normally send the form data
-            alert('Thank you for your message! Tien Dat will get back to you soon.');
-            this.form.reset();
-            
-            // Clear all validations
-            inputs.forEach(input => this.clearValidation(input));
+        if (!isFormValid) {
+            this.setStatus('error', 'Please fix the highlighted fields before submitting.');
+            return;
         }
+
+        const formData = {
+            name: this.form.querySelector('#contact-name')?.value.trim(),
+            email: this.form.querySelector('#contact-email')?.value.trim(),
+            purpose: this.form.querySelector('#contact-purpose')?.value || '',
+            message: this.form.querySelector('#contact-message')?.value.trim()
+        };
+
+        if (!formData.name || !formData.email || !formData.message) {
+            this.setStatus('error', 'Please complete all required fields.');
+            return;
+        }
+
+        this.submitForm(formData, inputs);
+    }
+    
+    async submitForm(formData, inputs) {
+        this.setStatus('', 'Sending your message...');
+        this.setSubmitting(true);
+
+        try {
+            const response = await fetch('/.netlify/functions/contact-form', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.details || result.error || 'Unable to send your message right now.');
+            }
+
+            this.setStatus('success', 'Thank you for your message! Tien Dat will get back to you soon.');
+            this.form.reset();
+            inputs.forEach(input => this.clearValidation(input));
+        } catch (error) {
+            console.error('Contact form submission failed:', error);
+            this.setStatus('error', error.message || 'Something went wrong. Please try again later.');
+        } finally {
+            this.setSubmitting(false);
+        }
+    }
+
+    setStatus(type, message) {
+        if (!this.statusElement) return;
+
+        this.statusElement.textContent = message || '';
+        this.statusElement.classList.remove('success', 'error');
+
+        if (type === 'success' || type === 'error') {
+            this.statusElement.classList.add(type);
+        }
+    }
+
+    setSubmitting(isSubmitting) {
+        if (!this.submitButton) return;
+
+        this.submitButton.disabled = isSubmitting;
+        this.submitButton.textContent = isSubmitting
+            ? 'Sending...'
+            : this.submitButtonLabel;
     }
     
     openCalendar() {

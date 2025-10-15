@@ -1392,6 +1392,20 @@ body {
     color: #51cf66;
 }
 
+.form-status {
+    min-height: 24px;
+    font-size: 0.9em;
+    color: var(--text-color-secondary);
+}
+
+.form-status.success {
+    color: #51cf66;
+}
+
+.form-status.error {
+    color: #ff6b6b;
+}
+
 .btn-submit,
 .btn-secondary {
     padding: 15px 30px;
