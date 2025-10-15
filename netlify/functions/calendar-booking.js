@@ -17,6 +17,9 @@ oauth2Client.setCredentials({
 
 google.options({ auth: oauth2Client });
 
+const CONTACT_EMAIL = process.env.CONTACT_TARGET_EMAIL || process.env.MEETING_OWNER_EMAIL || '';
+const CONTACT_NAME = process.env.CONTACT_OWNER_NAME || 'Portfolio Owner';
+
 exports.handler = async (event, context) => {
   // Handle CORS
   const headers = {
@@ -98,6 +101,14 @@ async function bookMeeting({ datetime, duration, userName, userEmail, meetingTyp
     const startTime = new Date(datetime);
     const endTime = new Date(startTime.getTime() + (duration * 60 * 1000));
 
+    const attendees = [
+      { email: userEmail, displayName: userName }
+    ];
+
+    if (CONTACT_EMAIL) {
+      attendees.push({ email: CONTACT_EMAIL, displayName: CONTACT_NAME });
+    }
+
     const event = {
       summary: `${meetingType.replace('-', ' ').toUpperCase()} with ${userName}`,
       description: `Meeting booked via portfolio website\n\nType: ${meetingType}\nNotes: ${notes || 'None'}\n\nBooked by: ${userName} (${userEmail})`,
@@ -109,10 +120,7 @@ async function bookMeeting({ datetime, duration, userName, userEmail, meetingTyp
         dateTime: endTime.toISOString(),
         timeZone: 'Asia/Ho_Chi_Minh'
       },
-      attendees: [
-        { email: userEmail, displayName: userName },
-        { email: 'tiendat0936@gmail.com', displayName: 'Tien Dat Do' }
-      ],
+      attendees,
       reminders: {
         useDefault: false,
         overrides: [

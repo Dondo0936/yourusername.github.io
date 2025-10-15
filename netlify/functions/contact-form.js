@@ -54,8 +54,7 @@ exports.handler = async (event) => {
   const smtpSecure = process.env.SMTP_SECURE
     ? process.env.SMTP_SECURE === 'true'
     : smtpPort === 465;
-  const targetEmail =
-    process.env.CONTACT_TARGET_EMAIL || 'tiendat0936@gmail.com';
+  const targetEmail = process.env.CONTACT_TARGET_EMAIL;
 
   if (!smtpUser || !smtpPass) {
     console.error('Missing SMTP credentials');
@@ -66,6 +65,18 @@ exports.handler = async (event) => {
         error: 'Email service not configured',
         details:
           'Please set SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_APP_PASSWORD environment variables.'
+      })
+    };
+  }
+
+  if (!targetEmail) {
+    console.error('CONTACT_TARGET_EMAIL environment variable is not set');
+    return {
+      statusCode: 500,
+      headers: BASE_HEADERS,
+      body: JSON.stringify({
+        error: 'Email destination not configured',
+        details: 'Please set the CONTACT_TARGET_EMAIL environment variable.'
       })
     };
   }

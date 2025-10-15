@@ -1,5 +1,8 @@
 const { Groq } = require('groq-sdk');
 
+const CONTACT_EMAIL = process.env.CONTACT_TARGET_EMAIL || process.env.MEETING_OWNER_EMAIL || '';
+const CONTACT_EMAIL_TEXT = CONTACT_EMAIL || 'Contact email available upon request';
+
 // Comprehensive portfolio context about Tien Dat Do
 const PORTFOLIO_CONTEXT = `
 You are Dat's AI assistant. You represent Tien Dat Do's portfolio and have comprehensive knowledge of his exceptional professional background.
@@ -117,7 +120,7 @@ QUANTIFIED ACHIEVEMENTS & BUSINESS IMPACT:
 - 100% client satisfaction rate in strategic account management role
 
 CONTACT & PROFESSIONAL NETWORKING:
-- Email: tiendat0936@gmail.com
+- Email: ${CONTACT_EMAIL_TEXT}
 - LinkedIn: linkedin.com/in/datdo02112000
 - Portfolio: dondo0936.github.io/yourusername.github.io/
 - GitHub: Multiple repositories featuring production-ready code and innovative solutions

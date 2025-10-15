@@ -66,6 +66,49 @@ const PROJECT_DATA = {
     }
 };
 
+let cachedContactEmail;
+
+function getContactEmail() {
+    if (cachedContactEmail) {
+        return cachedContactEmail;
+    }
+
+    const { contactUser, contactDomain, contactTld } = document.body?.dataset || {};
+    if (contactUser && contactDomain && contactTld) {
+        cachedContactEmail = `${contactUser}@${contactDomain}.${contactTld}`;
+        return cachedContactEmail;
+    }
+
+    return '';
+}
+
+function buildMailtoUrl(email, { subject, body, cc } = {}) {
+    if (!email) return '';
+
+    const params = [];
+    if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+    if (body) params.push(`body=${encodeURIComponent(body)}`);
+    if (cc) params.push(`cc=${encodeURIComponent(cc)}`);
+
+    const query = params.length ? `?${params.join('&')}` : '';
+    return `mailto:${email}${query}`;
+}
+
+function initializeContactEmailLink() {
+    const link = document.getElementById('contact-email-link');
+    const email = getContactEmail();
+
+    if (!link) return;
+
+    if (email) {
+        link.href = `mailto:${email}`;
+        link.textContent = email;
+    } else {
+        link.removeAttribute('href');
+        link.textContent = 'Contact email not configured';
+    }
+}
+
 // Enhanced chatbot with conversation memory and suggestions
 class PortfolioChatbot {
     constructor() {
@@ -639,7 +682,17 @@ Meeting ID: ${meeting.id}
 Booked via: Website Chatbot`;
         
         // Email to YOU first
-        const notificationUrl = `mailto:tiendat0936@gmail.com?subject=${encodeURIComponent(notificationSubject)}&body=${encodeURIComponent(notificationBody)}&cc=${meeting.userEmail}`;
+        const contactEmail = getContactEmail();
+        if (contactEmail) {
+            const notificationUrl = buildMailtoUrl(contactEmail, {
+                subject: notificationSubject,
+                body: notificationBody,
+                cc: meeting.userEmail
+            });
+            window.open(notificationUrl, '_blank');
+        } else {
+            console.warn('Contact email is not configured. Unable to open notification email draft.');
+        }
         
         // Also prepare confirmation email template for the visitor
         const confirmationSubject = `Meeting Request Submitted - ${this.formatDateTime(meeting.datetime)}`;
@@ -661,10 +714,6 @@ If you need to modify your request, please reply to the confirmation email you'l
 
 Best regards,
 Tien Dat's AI Assistant`;
-        
-        // Open email client with notification to you (CC'ing the visitor)
-        window.open(notificationUrl, '_blank');
-        
         return { notificationSubject, notificationBody, confirmationSubject, confirmationBody };
     }
     
@@ -1223,7 +1272,13 @@ Please let me know what works best for you.
 Best regards,
 [Your name]`;
         
-        const mailtoUrl = `mailto:tiendat0936@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const contactEmail = getContactEmail();
+        if (!contactEmail) {
+            alert('Contact email is not configured. Please try again later.');
+            return;
+        }
+
+        const mailtoUrl = buildMailtoUrl(contactEmail, { subject, body });
         window.location.href = mailtoUrl;
         
         this.calendarModal.classList.remove('active');
@@ -1262,7 +1317,13 @@ Looking forward to connecting!
 
 Best regards`;
         
-        const mailtoUrl = `mailto:tiendat0936@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const contactEmail = getContactEmail();
+        if (!contactEmail) {
+            alert('Contact email is not configured. Please try again later.');
+            return;
+        }
+
+        const mailtoUrl = buildMailtoUrl(contactEmail, { subject, body });
         window.location.href = mailtoUrl;
         
         // Clear form
@@ -1277,6 +1338,7 @@ Best regards`;
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    initializeContactEmailLink();
     new PortfolioChatbot();
     new ProjectFilter();
     new ProjectModals();

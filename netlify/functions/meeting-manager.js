@@ -14,6 +14,9 @@ const {
 
 const { google } = require('googleapis');
 
+const CONTACT_EMAIL = process.env.CONTACT_TARGET_EMAIL || process.env.MEETING_OWNER_EMAIL || '';
+const CONTACT_NAME = process.env.CONTACT_OWNER_NAME || 'Portfolio Owner';
+
 // Service Account Authentication for Google Calendar
 let calendar;
 if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
@@ -208,6 +211,14 @@ async function bookMeeting({ slotId, userEmail, userName, meetingType, notes, da
         const startTime = new Date(datetime);
         const endTime = new Date(startTime.getTime() + (duration * 60 * 1000));
 
+        const attendees = [
+          { email: userEmail, displayName: userName }
+        ];
+
+        if (CONTACT_EMAIL) {
+          attendees.push({ email: CONTACT_EMAIL, displayName: CONTACT_NAME });
+        }
+
         const event = {
           summary: `${meetingType.replace('-', ' ').toUpperCase()} - ${userName}`,
           description: `Meeting booked via portfolio website
@@ -227,10 +238,7 @@ Booking Time: ${new Date().toISOString()}`,
             dateTime: endTime.toISOString(),
             timeZone: 'Asia/Ho_Chi_Minh'
           },
-          attendees: [
-            { email: userEmail, displayName: userName },
-            { email: 'tiendat0936@gmail.com', displayName: 'Tien Dat Do' }
-          ],
+          attendees,
           reminders: {
             useDefault: false,
             overrides: [
