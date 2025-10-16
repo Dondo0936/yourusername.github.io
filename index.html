@@ -81,7 +81,7 @@
         
         <div class="project-carousel" data-interval="6500">
             <div class="project-slider">
-                <article class="project-slide active" data-project="breakdown-ai" style="background-image: url('https://assets.dondo.dev/breakdownai-hero.png');">
+                <article class="project-slide active" data-project="breakdown-ai" style="background-image: url('breakdownai-hero.png');">
                     <div class="project-slide-overlay"></div>
                     <div class="project-slide-content">
                         <h3>BreakdownAI Manufacturing Copilot</h3>
@@ -89,6 +89,30 @@
                         <p class="project-meta">Stack: Next.js, Firebase Functions v2, Claude API, Groq SDK, Kimi K2, Firestore, Tailwind</p>
                         <div class="project-actions">
                             <a href="https://breakdownxai.vercel.app/" target="_blank" rel="noopener" class="btn-link">View Live App</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="project-slide" data-project="tng-valuation" style="background-image: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>TNG Valuation & VN-Index Study</h3>
+                        <p>Analyzed TNG Investment & Trading JSC alongside VN-Index benchmarks by cleaning Vietstock/CafeF price fundamentals, engineering cash-flow drivers, and running Monte Carlo valuation scenarios with sensitivity visuals for investors.</p>
+                        <p class="project-meta">Stack: Python (pandas, NumPy, matplotlib, seaborn), Monte Carlo simulation, Jupyter Notebook</p>
+                        <div class="project-actions">
+                            <a href="https://github.com/Dondo0936/yourusername.github.io/blob/main/tng-valuation-vnindex.ipynb" target="_blank" rel="noopener" class="btn-link">Open Notebook</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="project-slide" data-project="financial-modeling" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>Financial Modeling & Monte Carlo Lab</h3>
+                        <p>Developed valuation dashboards that merge Vietstock/CafeF data, run Monte Carlo revenue simulations, and publish decision-ready visuals to support scenario planning for executives and investors.</p>
+                        <p class="project-meta">Stack: Python (pandas, NumPy, seaborn), Plotly, Excel, Looker Studio</p>
+                        <div class="project-actions">
+                            <a href="https://drive.google.com/drive/folders/1WBIQdZ7DdKcvxrTuklL-pbwSu9px-7T1?usp=sharing" target="_blank" rel="noopener" class="btn-link">Download Models</a>
                         </div>
                     </div>
                 </article>
@@ -105,29 +129,6 @@
                     </div>
                 </article>
                 
-                <article class="project-slide" data-project="data-extraction" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1640&auto=format&fit=crop');">
-                    <div class="project-slide-overlay"></div>
-                    <div class="project-slide-content">
-                        <h3>Google Apps Script Data Extraction Hub</h3>
-                        <p>Engineered recursive Drive scanners and Google Sheets pipelines that clean payment entries, enforce validation rules, and rebuild reporting tables without manual effort—creating a reusable data backbone for finance teams.</p>
-                        <p class="project-meta">Stack: Google Apps Script, Google Drive API, Google Sheets, Data Validation</p>
-                        <div class="project-actions">
-                            <a href="https://github.com/Dondo0936/App-Script-Automation" target="_blank" rel="noopener" class="btn-link">View on GitHub</a>
-                        </div>
-                    </div>
-                </article>
-                
-                <article class="project-slide" data-project="financial-modeling" style="background-image: url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1640&auto=format&fit=crop');">
-                    <div class="project-slide-overlay"></div>
-                    <div class="project-slide-content">
-                        <h3>Financial Modeling & Monte Carlo Lab</h3>
-                        <p>Developed valuation dashboards that merge Vietstock/CafeF data, run Monte Carlo revenue simulations, and publish decision-ready visuals to support scenario planning for executives and investors.</p>
-                        <p class="project-meta">Stack: Python (pandas, NumPy, seaborn), Plotly, Excel, Looker Studio</p>
-                        <div class="project-actions">
-                            <a href="https://drive.google.com/drive/folders/1WBIQdZ7DdKcvxrTuklL-pbwSu9px-7T1?usp=sharing" target="_blank" rel="noopener" class="btn-link">Download Models</a>
-                        </div>
-                    </div>
-                </article>
             </div>
             
             <div class="project-control-panel">
@@ -136,19 +137,19 @@
                     <span class="project-control-desc">Claude + Groq copilot for manufacturing BOMs</span>
                     <span class="project-progress"></span>
                 </button>
-                <button class="project-control-btn" data-target="ai-email-agent">
-                    <span class="project-control-title">Email & Data Agent</span>
-                    <span class="project-control-desc">LangChain workflow that structures supplier ops</span>
-                    <span class="project-progress"></span>
-                </button>
-                <button class="project-control-btn" data-target="data-extraction">
-                    <span class="project-control-title">Data Extraction Hub</span>
-                    <span class="project-control-desc">Apps Script pipelines for finance reporting</span>
+                <button class="project-control-btn" data-target="tng-valuation">
+                    <span class="project-control-title">TNG Valuation</span>
+                    <span class="project-control-desc">Forecasting TNG vs VN-Index with Monte Carlo</span>
                     <span class="project-progress"></span>
                 </button>
                 <button class="project-control-btn" data-target="financial-modeling">
                     <span class="project-control-title">Monte Carlo Lab</span>
                     <span class="project-control-desc">Analytics toolkit for valuation scenarios</span>
+                    <span class="project-progress"></span>
+                </button>
+                <button class="project-control-btn" data-target="ai-email-agent">
+                    <span class="project-control-title">Email & Data Agent</span>
+                    <span class="project-control-desc">LangChain workflow that structures supplier ops</span>
                     <span class="project-progress"></span>
                 </button>
             </div>
