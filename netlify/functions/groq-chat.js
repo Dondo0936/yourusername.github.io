@@ -19,7 +19,11 @@ function extractMessageContent(message) {
         if (typeof part === 'string') return part;
         if (typeof part.text === 'string') return part.text;
         if (part.type === 'text' && typeof part.text?.value === 'string') return part.text.value;
+        if (part.type === 'text' && typeof part.text === 'string') return part.text;
         if (typeof part.text?.content === 'string') return part.text.content;
+        if (part.type === 'output_text' && typeof part.text === 'string') return part.text;
+        if (typeof part.value === 'string') return part.value;
+        if (typeof part.content === 'string') return part.content;
         return '';
       })
       .join('')
@@ -434,6 +438,7 @@ exports.handler = async (event, context) => {
       tools: tools,
       tool_choice: "auto"
     });
+    console.log('Groq primary choice:', JSON.stringify(chatCompletion.choices[0], null, 2));
 
     // Handle function calls
     if (chatCompletion.choices[0].message.tool_calls) {
@@ -476,6 +481,7 @@ exports.handler = async (event, context) => {
         max_completion_tokens: 300,
         top_p: 0.95
       });
+      console.log('Groq follow-up choice:', JSON.stringify(followUpCompletion.choices[0], null, 2));
 
       const followUpContent = extractMessageContent(followUpCompletion.choices[0].message);
 

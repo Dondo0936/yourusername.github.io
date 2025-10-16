@@ -304,13 +304,81 @@ class PortfolioChatbot {
         }
     }
     
+    formatMessageContent(content) {
+        if (!content) return '';
+        
+        const escapeHtml = (str) => str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        
+        const applyInlineFormatting = (str) => escapeHtml(str)
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/`(.+?)`/g, '<code>$1</code>');
+        
+        const lines = content.split(/\r?\n/);
+        let html = '';
+        let inUnorderedList = false;
+        let inOrderedList = false;
+        
+        const closeLists = () => {
+            if (inUnorderedList) {
+                html += '</ul>';
+                inUnorderedList = false;
+            }
+            if (inOrderedList) {
+                html += '</ol>';
+                inOrderedList = false;
+            }
+        };
+        
+        for (const line of lines) {
+            const trimmed = line.trim();
+            
+            if (!trimmed) {
+                closeLists();
+                html += '<br>';
+                continue;
+            }
+            
+            if (/^[-•]\s+/.test(trimmed)) {
+                if (!inUnorderedList) {
+                    closeLists();
+                    html += '<ul>';
+                    inUnorderedList = true;
+                }
+                const item = trimmed.replace(/^[-•]\s+/, '');
+                html += `<li>${applyInlineFormatting(item)}</li>`;
+                continue;
+            }
+            
+            if (/^\d+\.\s+/.test(trimmed)) {
+                if (!inOrderedList) {
+                    closeLists();
+                    html += '<ol>';
+                    inOrderedList = true;
+                }
+                const item = trimmed.replace(/^\d+\.\s+/, '');
+                html += `<li>${applyInlineFormatting(item)}</li>`;
+                continue;
+            }
+            
+            closeLists();
+            html += `<p>${applyInlineFormatting(trimmed)}</p>`;
+        }
+        
+        closeLists();
+        return html.replace(/(<br>)+$/, '');
+    }
+    
     addMessage(content, type) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${type}-message`;
         
         const messageContent = document.createElement('div');
         messageContent.className = 'message-content';
-        messageContent.textContent = content;
+        messageContent.innerHTML = this.formatMessageContent(content);
         
         messageDiv.appendChild(messageContent);
         this.chatbotMessages.appendChild(messageDiv);
