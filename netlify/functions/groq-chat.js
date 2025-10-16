@@ -430,13 +430,14 @@ exports.handler = async (event, context) => {
         }
       ],
       model: "qwen/qwen3-32b",
-      temperature: 0.6,
-      max_completion_tokens: 300,
-      top_p: 0.95,
+      temperature: 0.5,
+      max_completion_tokens: 600,
+      top_p: 0.9,
       stream: false,
       reasoning_effort: "default",
       tools: tools,
-      tool_choice: "auto"
+      tool_choice: "auto",
+      response_format: { type: "text" }
     });
     console.log('Groq primary choice:', JSON.stringify(chatCompletion.choices[0], null, 2));
 
@@ -477,9 +478,10 @@ exports.handler = async (event, context) => {
           }
         ],
         model: "qwen/qwen3-32b",
-        temperature: 0.6,
-        max_completion_tokens: 300,
-        top_p: 0.95
+        temperature: 0.5,
+        max_completion_tokens: 600,
+        top_p: 0.9,
+        response_format: { type: "text" }
       });
       console.log('Groq follow-up choice:', JSON.stringify(followUpCompletion.choices[0], null, 2));
 
