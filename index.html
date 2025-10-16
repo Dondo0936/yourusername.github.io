@@ -79,21 +79,9 @@
     <div class="container">
         <h2 class="section-title">Signature Projects</h2>
         
-        <div class="project-carousel" data-interval="6500">
+        <div class="project-carousel" data-interval="6500" data-active="tng-valuation">
             <div class="project-slider">
-                <article class="project-slide active" data-project="breakdown-ai" style="background-image: url('breakdownai-hero.png');">
-                    <div class="project-slide-overlay"></div>
-                    <div class="project-slide-content">
-                        <h3>BreakdownAI Manufacturing Copilot</h3>
-                        <p>Built a multimodal production assistant that pairs Claude Sonnet 4, Kimi K2, and Groq LLMs with Firebase Functions, Firestore queues, and SAP-style CSV exports to help engineers deconstruct BOMs, surface supplier intel, and prep sourcing packs in minutes.</p>
-                        <p class="project-meta">Stack: Next.js, Firebase Functions v2, Claude API, Groq SDK, Kimi K2, Firestore, Tailwind</p>
-                        <div class="project-actions">
-                            <a href="https://breakdownxai.vercel.app/" target="_blank" rel="noopener" class="btn-link">View Live App</a>
-                        </div>
-                    </div>
-                </article>
-                
-                <article class="project-slide" data-project="tng-valuation" style="background-image: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1640&auto=format&fit=crop');">
+                <article class="project-slide active" data-project="tng-valuation" style="background-image: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1640&auto=format&fit=crop');">
                     <div class="project-slide-overlay"></div>
                     <div class="project-slide-content">
                         <h3>TNG Valuation & VN-Index Study</h3>
@@ -117,6 +105,18 @@
                     </div>
                 </article>
                 
+                <article class="project-slide" data-project="breakdown-ai" style="background-image: url('breakdownai-hero.png');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>BreakdownAI Manufacturing Copilot</h3>
+                        <p>Built a multimodal production assistant that pairs Claude Sonnet 4, Kimi K2, and Groq LLMs with Firebase Functions, Firestore queues, and SAP-style CSV exports to help engineers deconstruct BOMs, surface supplier intel, and prep sourcing packs in minutes.</p>
+                        <p class="project-meta">Stack: Next.js, Firebase Functions v2, Claude API, Groq SDK, Kimi K2, Firestore, Tailwind</p>
+                        <div class="project-actions">
+                            <a href="https://breakdownxai.vercel.app/" target="_blank" rel="noopener" class="btn-link">View Live App</a>
+                        </div>
+                    </div>
+                </article>
+                
                 <article class="project-slide" data-project="ai-email-agent" style="background-image: url('https://images.unsplash.com/photo-1523475472560-d2df97ec485c?q=80&w=1640&auto=format&fit=crop');">
                     <div class="project-slide-overlay"></div>
                     <div class="project-slide-content">
@@ -132,12 +132,7 @@
             </div>
             
             <div class="project-control-panel">
-                <button class="project-control-btn active" data-target="breakdown-ai">
-                    <span class="project-control-title">BreakdownAI</span>
-                    <span class="project-control-desc">Claude + Groq copilot for manufacturing BOMs</span>
-                    <span class="project-progress"></span>
-                </button>
-                <button class="project-control-btn" data-target="tng-valuation">
+                <button class="project-control-btn active" data-target="tng-valuation">
                     <span class="project-control-title">TNG Valuation</span>
                     <span class="project-control-desc">Forecasting TNG vs VN-Index with Monte Carlo</span>
                     <span class="project-progress"></span>
@@ -145,6 +140,11 @@
                 <button class="project-control-btn" data-target="financial-modeling">
                     <span class="project-control-title">Monte Carlo Lab</span>
                     <span class="project-control-desc">Analytics toolkit for valuation scenarios</span>
+                    <span class="project-progress"></span>
+                </button>
+                <button class="project-control-btn" data-target="breakdown-ai">
+                    <span class="project-control-title">BreakdownAI</span>
+                    <span class="project-control-desc">Claude + Groq copilot for manufacturing BOMs</span>
                     <span class="project-progress"></span>
                 </button>
                 <button class="project-control-btn" data-target="ai-email-agent">

@@ -1034,7 +1034,10 @@ class ProjectCarousel {
         this.slides = Array.from(this.carousel.querySelectorAll('.project-slide'));
         this.buttons = Array.from(this.carousel.querySelectorAll('.project-control-btn'));
         this.progressBars = this.buttons.map(btn => btn.querySelector('.project-progress'));
-        this.activeIndex = this.slides.findIndex(slide => slide.classList.contains('active'));
+        const preset = this.carousel.dataset.active;
+        this.activeIndex = preset
+            ? this.slides.findIndex(slide => slide.dataset.project === preset)
+            : this.slides.findIndex(slide => slide.classList.contains('active'));
         if (this.activeIndex < 0) this.activeIndex = 0;
 
         if (!this.slides.length || !this.buttons.length) return;
