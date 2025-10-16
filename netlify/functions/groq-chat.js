@@ -3,6 +3,40 @@ const { Groq } = require('groq-sdk');
 const CONTACT_EMAIL = process.env.CONTACT_TARGET_EMAIL || process.env.MEETING_OWNER_EMAIL || '';
 const CONTACT_EMAIL_TEXT = CONTACT_EMAIL || 'Contact email available upon request';
 
+function extractMessageContent(message) {
+  if (!message) return '';
+
+  const { content } = message;
+
+  if (typeof content === 'string') {
+    return content.trim();
+  }
+
+  if (Array.isArray(content)) {
+    return content
+      .map((part) => {
+        if (!part) return '';
+        if (typeof part === 'string') return part;
+        if (typeof part.text === 'string') return part.text;
+        if (part.type === 'text' && typeof part.text?.value === 'string') return part.text.value;
+        if (typeof part.text?.content === 'string') return part.text.content;
+        return '';
+      })
+      .join('')
+      .trim();
+  }
+
+  if (typeof content?.text === 'string') {
+    return content.text.trim();
+  }
+
+  if (typeof content?.text?.value === 'string') {
+    return content.text.value.trim();
+  }
+
+  return '';
+}
+
 // Comprehensive portfolio context about Tien Dat Do
 const PORTFOLIO_CONTEXT = `
 You are Dat's AI assistant. You represent Tien Dat Do's portfolio and have comprehensive knowledge of his exceptional professional background.
@@ -584,6 +618,8 @@ exports.handler = async (event, context) => {
         top_p: 0.95
       });
 
+      const followUpContent = extractMessageContent(followUpCompletion.choices[0].message);
+
       return {
         statusCode: 200,
         headers: {
@@ -591,10 +627,12 @@ exports.handler = async (event, context) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          response: followUpCompletion.choices[0].message.content
+          response: followUpContent || 'I’m sorry, I could not generate a response to that. Could you rephrase your question?'
         })
       };
     }
+
+    const directContent = extractMessageContent(chatCompletion.choices[0].message);
 
     return {
       statusCode: 200,
@@ -603,7 +641,7 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        response: chatCompletion.choices[0].message.content
+        response: directContent || 'I’m sorry, I could not generate a response to that. Could you try asking in a different way?'
       })
     };
 
