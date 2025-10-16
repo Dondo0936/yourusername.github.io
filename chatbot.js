@@ -247,31 +247,12 @@ class PortfolioChatbot {
         this.setLoading(true);
         const typingIndicator = this.addEnhancedTypingIndicator();
         
+        let timeoutId;
+        const controller = new AbortController();
+
         try {
-            // Check if message is about meeting booking first
-            const meetingResponse = await this.handleMeetingRequest(message);
-            if (meetingResponse) {
-                // Handle meeting booking locally
-                this.removeTypingIndicator(typingIndicator);
-                this.addMessage(meetingResponse, 'bot');
-                this.saveMessageToHistory(meetingResponse, 'bot');
-                this.showSuggestedQuestions();
-                return;
-            }
-            
-            // Check if user is providing booking details
-            if (this.isBookingInProgress(message)) {
-                const bookingResponse = await this.processBookingDetails(message);
-                this.removeTypingIndicator(typingIndicator);
-                this.addMessage(bookingResponse, 'bot');
-                this.saveMessageToHistory(bookingResponse, 'bot');
-                this.showSuggestedQuestions();
-                return;
-            }
-            
             // Send message to Groq API via Netlify function
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+            timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
             const response = await fetch('/.netlify/functions/groq-chat', {
                 method: 'POST',
                 headers: {
@@ -299,7 +280,9 @@ class PortfolioChatbot {
             
         } catch (error) {
             console.error('Error:', error);
-            clearTimeout(timeoutId);
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
             this.removeTypingIndicator(typingIndicator);
             
             let errorMessage = 'Sorry, I encountered an error. Please try again later.';
@@ -313,6 +296,9 @@ class PortfolioChatbot {
             
             this.addMessage(errorMessage, 'bot');
         } finally {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
             this.removeTypingIndicator(typingIndicator);
             this.setLoading(false);
         }
