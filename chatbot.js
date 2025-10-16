@@ -976,11 +976,18 @@ class ProjectFilter {
         this.searchInput = document.getElementById('project-search');
         this.filterTags = document.querySelectorAll('.filter-tag');
         this.projectEntries = document.querySelectorAll('.project-entry');
-        
+        this.isEnabled = !!(this.searchInput && this.filterTags.length && this.projectEntries.length);
+
+        if (!this.isEnabled) {
+            return;
+        }
+
         this.initEventListeners();
     }
     
     initEventListeners() {
+        if (!this.isEnabled) return;
+
         // Search input
         this.searchInput.addEventListener('input', () => this.filterProjects());
         
@@ -997,6 +1004,8 @@ class ProjectFilter {
     }
     
     filterProjects() {
+        if (!this.isEnabled) return;
+
         const searchTerm = this.searchInput.value.toLowerCase();
         const activeFilter = document.querySelector('.filter-tag.active').dataset.filter;
         
@@ -1013,6 +1022,88 @@ class ProjectFilter {
                 project.classList.add('hidden');
             }
         });
+    }
+}
+
+class ProjectCarousel {
+    constructor() {
+        this.carousel = document.querySelector('.project-carousel');
+        if (!this.carousel) return;
+
+        this.interval = parseInt(this.carousel.dataset.interval, 10) || 6000;
+        this.slides = Array.from(this.carousel.querySelectorAll('.project-slide'));
+        this.buttons = Array.from(this.carousel.querySelectorAll('.project-control-btn'));
+        this.progressBars = this.buttons.map(btn => btn.querySelector('.project-progress'));
+        this.activeIndex = this.slides.findIndex(slide => slide.classList.contains('active'));
+        if (this.activeIndex < 0) this.activeIndex = 0;
+
+        if (!this.slides.length || !this.buttons.length) return;
+
+        this.timer = null;
+        this.bindEvents();
+        this.setActive(this.activeIndex);
+        this.startTimer();
+    }
+
+    bindEvents() {
+        this.buttons.forEach((button, index) => {
+            button.addEventListener('click', () => this.goTo(index, true));
+        });
+    }
+
+    goTo(index, isManual = false) {
+        if (index === this.activeIndex) return;
+        this.setActive(index);
+        this.startTimer();
+
+        if (isManual) {
+            this.restartProgress(index);
+        }
+    }
+
+    setActive(index) {
+        this.slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        this.buttons.forEach((button, i) => button.classList.toggle('active', i === index));
+        this.resetProgressBars();
+
+        const activeBar = this.progressBars[index];
+        if (activeBar) {
+            requestAnimationFrame(() => {
+                activeBar.style.transition = `width ${this.interval}ms linear`;
+                activeBar.style.width = '100%';
+            });
+        }
+
+        this.activeIndex = index;
+    }
+
+    resetProgressBars() {
+        this.progressBars.forEach(bar => {
+            if (!bar) return;
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            // Force reflow
+            void bar.offsetWidth;
+        });
+    }
+
+    restartProgress(index) {
+        this.resetProgressBars();
+        const bar = this.progressBars[index];
+        if (bar) {
+            requestAnimationFrame(() => {
+                bar.style.transition = `width ${this.interval}ms linear`;
+                bar.style.width = '100%';
+            });
+        }
+    }
+
+    startTimer() {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            const nextIndex = (this.activeIndex + 1) % this.slides.length;
+            this.goTo(nextIndex);
+        }, this.interval);
     }
 }
 
@@ -1395,6 +1486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeContactEmailLink();
     new PortfolioChatbot();
     new ProjectFilter();
+    new ProjectCarousel();
     new ProjectModals();
     new ContactForm();
     

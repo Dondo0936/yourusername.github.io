@@ -79,88 +79,78 @@
     <div class="container">
         <h2 class="section-title">Signature Projects</h2>
         
-        <!-- Project Filter Controls -->
-        <div class="project-filters">
-            <input type="text" id="project-search" placeholder="Search projects..." class="project-search">
-            <div class="filter-tags">
-                <button class="filter-tag active" data-filter="all">All</button>
-                <button class="filter-tag" data-filter="n8n">n8n</button>
-                <button class="filter-tag" data-filter="python">Python</button>
-                <button class="filter-tag" data-filter="google-apps-script">Google Apps Script</button>
-                <button class="filter-tag" data-filter="langchain">LangChain</button>
-                <button class="filter-tag" data-filter="automation">Automation</button>
-            </div>
-        </div>
-        
-        <div class="projects-showcase">
-            <!-- Project 1 -->
-            <div class="project-entry" data-tags="n8n,langchain,automation" data-project="ai-email-agent">
-                <div class="project-thumbnail-container">
-                    <!-- Option A: Text (styled by CSS) -->
-                    <!-- <span>N8N</span> --> <!-- Comment out or remove if using image -->
-                    <!-- Option B: Image -->
-                    <div class="project-thumbnail">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/N8n-logo-new.svg" alt="n8n">
+        <div class="project-carousel" data-interval="6500">
+            <div class="project-slider">
+                <article class="project-slide active" data-project="breakdown-ai" style="background-image: url('https://images.unsplash.com/photo-1580894897200-5bf9bf08421d?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>BreakdownX AI Manufacturing Copilot</h3>
+                        <p>Built a multimodal production assistant that pairs Claude Sonnet 4, Kimi K2, and Groq LLMs with Firebase Functions, Firestore queues, and SAP-style CSV exports to help engineers deconstruct BOMs, surface supplier intel, and prep sourcing packs in minutes.</p>
+                        <p class="project-meta">Stack: Next.js, Firebase Functions v2, Claude API, Groq SDK, Kimi K2, Firestore, Tailwind</p>
+                        <div class="project-actions">
+                            <a href="https://breakdownxai.vercel.app/" target="_blank" rel="noopener" class="btn-link">View Live App</a>
+                        </div>
                     </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="#" class="project-modal-trigger" data-project="ai-email-agent">AI-Powered Email & Data Agent</a>
-                    </h3>
-                    <p>Developed an AI agent using n8n and LangChain for automated email classification, PDF data extraction (OCR), and Google Sheets integration. (Upwork)</p>
-                    <p class="project-skills">Skills: n8n, LangChain, Google Sheets</p>
-                </div>
+                </article>
+                
+                <article class="project-slide" data-project="ai-email-agent" style="background-image: url('https://images.unsplash.com/photo-1523475472560-d2df97ec485c?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>AI-Powered Email & Data Agent</h3>
+                        <p>Automated procurement inbox triage with n8n and LangChain—classifying supplier emails, OCR-ing PDF invoices, and syncing structured line-item data into Google Sheets so buyers always work from a clean queue.</p>
+                        <p class="project-meta">Stack: n8n, LangChain, Google Workspace APIs, Claude, Google Sheets</p>
+                        <div class="project-actions">
+                            <a href="https://www.upwork.com/freelancers/~01d919364bdbf903ce?p=1916487322753646592" target="_blank" rel="noopener" class="btn-link">Project Case Study</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="project-slide" data-project="data-extraction" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>Google Apps Script Data Extraction Hub</h3>
+                        <p>Engineered recursive Drive scanners and Google Sheets pipelines that clean payment entries, enforce validation rules, and rebuild reporting tables without manual effort—creating a reusable data backbone for finance teams.</p>
+                        <p class="project-meta">Stack: Google Apps Script, Google Drive API, Google Sheets, Data Validation</p>
+                        <div class="project-actions">
+                            <a href="https://github.com/Dondo0936/App-Script-Automation" target="_blank" rel="noopener" class="btn-link">View on GitHub</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="project-slide" data-project="financial-modeling" style="background-image: url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1640&auto=format&fit=crop');">
+                    <div class="project-slide-overlay"></div>
+                    <div class="project-slide-content">
+                        <h3>Financial Modeling & Monte Carlo Lab</h3>
+                        <p>Developed valuation dashboards that merge Vietstock/CafeF data, run Monte Carlo revenue simulations, and publish decision-ready visuals to support scenario planning for executives and investors.</p>
+                        <p class="project-meta">Stack: Python (pandas, NumPy, seaborn), Plotly, Excel, Looker Studio</p>
+                        <div class="project-actions">
+                            <a href="https://drive.google.com/drive/folders/1WBIQdZ7DdKcvxrTuklL-pbwSu9px-7T1?usp=sharing" target="_blank" rel="noopener" class="btn-link">Download Models</a>
+                        </div>
+                    </div>
+                </article>
             </div>
             
-            <!-- Project 2 -->
-            <div class="project-entry" data-tags="python,excel,automation" data-project="financial-modeling">
-                <div class="project-thumbnail-container">
-                    <!-- <span>PY</span> --> <!-- Comment out or remove if using image -->
-                    <div class="project-thumbnail">
-                        <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="#" class="project-modal-trigger" data-project="financial-modeling">Financial Modeling & Valuation</a>
-                    </h3>
-                    <p>Led in-depth financial analysis, creating predictive models and sensitivity analyses with Python and Excel for market risk evaluation. (Drive)</p>
-                    <p class="project-skills">Skills: Python, Excel</p>
-                </div>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="project-entry" data-tags="google-apps-script,automation" data-project="data-extraction">
-                <div class="project-thumbnail-container">
-                    <!-- <span>GAS</span> --> <!-- Comment out or remove if using image -->
-                    <div class="project-thumbnail">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_Apps_Script.svg" alt="Google Apps Script">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="#" class="project-modal-trigger" data-project="data-extraction">Automated Data Extraction</a>
-                    </h3>
-                    <p>Engineered Google Apps Scripts for automated data extraction from Google Drive, enhancing data accessibility and workflow efficiency. (GitHub)</p>
-                    <p class="project-skills">Skills: Google Apps Script, Google Drive</p>
-                </div>
-            </div>
-
-            <!-- Project 4 -->
-            <div class="project-entry" data-tags="google-apps-script,automation" data-project="gmail-automation">
-                <div class="project-thumbnail-container">
-                    <!-- <span>GAS</span> --> <!-- Comment out or remove if using image -->
-                    <div class="project-thumbnail">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_Apps_Script.svg" alt="Google Apps Script">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="#" class="project-modal-trigger" data-project="gmail-automation">Gmail Attachment Automation</a>
-                    </h3>
-                    <p>Streamlined Gmail attachment processing, automatically saving specified files to designated Google Drive folders using Google Apps Script. (GitHub)</p>
-                    <p class="project-skills">Skills: Google Apps Script, Gmail, Google Drive</p>
-                </div>
+            <div class="project-control-panel">
+                <button class="project-control-btn active" data-target="breakdown-ai">
+                    <span class="project-control-title">BreakdownX AI</span>
+                    <span class="project-control-desc">Claude + Groq copilot for manufacturing BOMs</span>
+                    <span class="project-progress"></span>
+                </button>
+                <button class="project-control-btn" data-target="ai-email-agent">
+                    <span class="project-control-title">Email & Data Agent</span>
+                    <span class="project-control-desc">LangChain workflow that structures supplier ops</span>
+                    <span class="project-progress"></span>
+                </button>
+                <button class="project-control-btn" data-target="data-extraction">
+                    <span class="project-control-title">Data Extraction Hub</span>
+                    <span class="project-control-desc">Apps Script pipelines for finance reporting</span>
+                    <span class="project-progress"></span>
+                </button>
+                <button class="project-control-btn" data-target="financial-modeling">
+                    <span class="project-control-title">Monte Carlo Lab</span>
+                    <span class="project-control-desc">Analytics toolkit for valuation scenarios</span>
+                    <span class="project-progress"></span>
+                </button>
             </div>
         </div>
     </div>
